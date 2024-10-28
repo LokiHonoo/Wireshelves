@@ -1,0 +1,254 @@
+﻿<hui:Window x:Class="Wireshelves.MainWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:hui="https://github.com/lokihonoo/honooui.wpf"
+            xmlns:local="clr-namespace:Wireshelves"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:vm="clr-namespace:Wireshelves.ViewModels"
+            xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+            Title="Wireshelves"
+            Background="{DynamicResource SecondaryBackgroundBrush}"
+            FontSize="{DynamicResource PrimaryFontSize}"
+            Foreground="{DynamicResource PrimaryForegroundBrush}"
+            Left="{Binding GlobalViewModel.WindowLeft, Mode=TwoWay}"
+            ResizeMode="CanMinimize"
+            SizeToContent="WidthAndHeight"
+            SystemButtons="Hidden"
+            Top="{Binding GlobalViewModel.WindowTop, Mode=TwoWay}"
+            Topmost="{Binding GlobalViewModel.Pin}"
+            mc:Ignorable="d">
+    <hui:Window.Resources>
+        <local:ThemeStyleToCutomConverter x:Key="ThemeStyleToCutomConverter"
+                                          DarkValue="/Resources/TitleBg_200x32_D.png"
+                                          OtherValue="/Resources/TitleBg_200x32_L.png" />
+        <hui:NumEqualParamToCustumConverter x:Key="NumEqualParamToBooleanConverter"
+                                            EqualValue="False"
+                                            LessThenValue="True"
+                                            MoreThenValue="True" />
+    </hui:Window.Resources>
+    <hui:Window.DataContext>
+        <vm:MainWindowViewModel />
+    </hui:Window.DataContext>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Deactivated">
+            <b:InvokeCommandAction Command="{Binding WindowDeactivatedCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <hui:Window.CaptionBar>
+        <Grid Background="{DynamicResource SecondaryBackgroundBrush}" WindowChrome.IsHitTestVisibleInChrome="{Binding GlobalViewModel.AppLocation, Converter={StaticResource NumEqualParamToBooleanConverter}, ConverterParameter=3}">
+            <Image Width="200"
+                   Height="32"
+                   Margin="20,0,0,0"
+                   HorizontalAlignment="Left"
+                   Source="{Binding GlobalViewModel.ThemeStyle, Converter={StaticResource ThemeStyleToCutomConverter}}" />
+            <DockPanel LastChildFill="False">
+                <Grid Margin="24,0,0,0" DockPanel.Dock="Left">
+                    <TextBlock Margin="40,0,0,0"
+                               VerticalAlignment="Center"
+                               FontSize="12"
+                               Foreground="{DynamicResource ThirdlyForegroundBrush}"
+                               Text="Lightweight software launcher" />
+                    <TextBlock Margin="0,-18,0,0"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="#FF3464DC"
+                               Text="Wireshelves" />
+                </Grid>
+                <ToggleButton Margin="0,0,30,0"
+                              hui:ToggleButtonAttaches.CheckedBackground="{DynamicResource Alpha20Brush}"
+                              hui:ToggleButtonAttaches.CheckedContent="{StaticResource PinFillGeometry}"
+                              hui:ToggleButtonAttaches.CheckedForeground="#FFF19102"
+                              hui:ToggleButtonAttaches.UncheckedContent="{StaticResource PinGeometry}"
+                              ContentTemplate="{StaticResource GeometryToPathIcon16DataTemplate}"
+                              DockPanel.Dock="Right"
+                              IsChecked="{Binding GlobalViewModel.Pin, Mode=TwoWay}"
+                              Style="{DynamicResource ToggleButtonSystemStyle}"
+                              WindowChrome.IsHitTestVisibleInChrome="True" />
+            </DockPanel>
+        </Grid>
+    </hui:Window.CaptionBar>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid x:Name="WorkAreaGrid"
+                  Width="{Binding GlobalViewModel.AreaWidth}"
+                  Height="{Binding GlobalViewModel.AreaHeight}"
+                  d:Height="300"
+                  d:Width="300">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="TopAreaGrid" Height="20" />
+                <Grid x:Name="AppAreaGrid"
+                      Grid.Row="1"
+                      Margin="0,10"
+                      Background="{DynamicResource SecondaryBackgroundBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid x:Name="DropLeftGrid"
+                          Grid.Column="0"
+                          Width="20"
+                          AllowDrop="True"
+                          Background="Transparent">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="DragEnter">
+                                <b:InvokeCommandAction Command="{Binding DropSideEnterCommand}" PassEventArgsToCommand="True" />
+                                <b:ChangePropertyAction PropertyName="Background" Value="{DynamicResource Alpha1CBrush}" />
+                            </b:EventTrigger>
+                            <b:EventTrigger EventName="DragOver">
+                                <b:InvokeCommandAction Command="{Binding DropLeftOverCommand}" PassEventArgsToCommand="True" />
+                            </b:EventTrigger>
+                            <b:EventTrigger EventName="DragLeave">
+                                <b:ChangePropertyAction PropertyName="Background" Value="Transparent" />
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </Grid>
+                    <Grid x:Name="ShelfContainer"
+                          Grid.Column="1"
+                          Width="{Binding GlobalViewModel.ShelfWidth}"
+                          Height="{Binding GlobalViewModel.ShelfHeight}"
+                          Background="Transparent">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="MouseWheel">
+                                <b:InvokeCommandAction Command="{Binding MouseWheelCommand}" PassEventArgsToCommand="True" />
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                        <local:ShelfUserControl DataContext="{Binding SelectedValue, ElementName=MainNavigationView}" />
+                    </Grid>
+                    <Grid x:Name="DropRightGrid"
+                          Grid.Column="2"
+                          Width="20"
+                          AllowDrop="True"
+                          Background="Transparent">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="DragEnter">
+                                <b:InvokeCommandAction Command="{Binding DropSideEnterCommand}" PassEventArgsToCommand="True" />
+                                <b:ChangePropertyAction PropertyName="Background" Value="{DynamicResource Alpha1CBrush}" />
+                            </b:EventTrigger>
+                            <b:EventTrigger EventName="DragOver">
+                                <b:InvokeCommandAction Command="{Binding DropRightOverCommand}" PassEventArgsToCommand="True" />
+                            </b:EventTrigger>
+                            <b:EventTrigger EventName="DragLeave">
+                                <b:ChangePropertyAction PropertyName="Background" Value="Transparent" />
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </Grid>
+                    <Grid x:Name="ControlAreaGrid"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          Height="36">
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Orientation="Horizontal">
+                            <Button Padding="7,4"
+                                    hui:ButtonAttaches.CornerRadius="13"
+                                    Command="{Binding InsertPageBeforeCommand}"
+                                    Content="{StaticResource PlusGeometry}"
+                                    ContentTemplate="{StaticResource GeometryToPathIcon12DataTemplate}"
+                                    Foreground="{DynamicResource FifthForegroundBrush}"
+                                    Style="{DynamicResource ButtonTransparentStyle}"
+                                    ToolTip="{Binding Localization.InsertPageBefore}"
+                                    Visibility="{Binding GlobalViewModel.MoreControllers, Converter={x:Static hui:BooleanToVisibilityVisibleConverter.Instance}}" />
+                            <Button Padding="7,4"
+                                    hui:ButtonAttaches.CornerRadius="13"
+                                    Command="{Binding PreviousCommand}"
+                                    Content="{StaticResource AngleLeftGeometry}"
+                                    ContentTemplate="{StaticResource GeometryToPathIcon12DataTemplate}"
+                                    Foreground="{DynamicResource FifthForegroundBrush}"
+                                    Style="{DynamicResource ButtonTransparentStyle}"
+                                    ToolTip="{Binding Localization.PreviousPage}"
+                                    Visibility="{Binding GlobalViewModel.MoreControllers, Converter={x:Static hui:BooleanToVisibilityVisibleConverter.Instance}}" />
+                            <hui:NavigationView x:Name="MainNavigationView"
+                                                Margin="12,0"
+                                                Background="{DynamicResource FourthBackgroundBrush}"
+                                                Command="{Binding NavigationViewItemClickedCommand}"
+                                                CommandParameter="{Binding SelectedValue, RelativeSource={RelativeSource self}}"
+                                                ItemsSource="{Binding GlobalViewModel.Shelves}"
+                                                SelectedIndex="{Binding GlobalViewModel.ShelfIndex, Mode=TwoWay}"
+                                                Style="{DynamicResource HonooUI.NavigationViewHorizontalDotStyle}" />
+                            <Button Padding="7,4"
+                                    hui:ButtonAttaches.CornerRadius="13"
+                                    Command="{Binding NextCommand}"
+                                    Content="{StaticResource AngleRightGeometry}"
+                                    ContentTemplate="{StaticResource GeometryToPathIcon12DataTemplate}"
+                                    Foreground="{DynamicResource FifthForegroundBrush}"
+                                    Style="{DynamicResource ButtonTransparentStyle}"
+                                    ToolTip="{Binding Localization.NextPage}"
+                                    Visibility="{Binding GlobalViewModel.MoreControllers, Converter={x:Static hui:BooleanToVisibilityVisibleConverter.Instance}}" />
+                            <Button Padding="7,4"
+                                    hui:ButtonAttaches.CornerRadius="13"
+                                    Command="{Binding InsertPageAfterCommand}"
+                                    Content="{StaticResource PlusGeometry}"
+                                    ContentTemplate="{StaticResource GeometryToPathIcon12DataTemplate}"
+                                    Foreground="{DynamicResource FifthForegroundBrush}"
+                                    Style="{DynamicResource ButtonTransparentStyle}"
+                                    ToolTip="{Binding Localization.InsertPageAfter}"
+                                    Visibility="{Binding GlobalViewModel.MoreControllers, Converter={x:Static hui:BooleanToVisibilityVisibleConverter.Instance}}" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <local:AppItemMenuUserControl x:Name="AppItemMenu"
+                                              Grid.RowSpan="2"
+                                              DataContext="{Binding GlobalViewModel.AppItemEditing, Mode=OneWay}"
+                                              Visibility="{Binding GlobalViewModel.AppItemEditing, Mode=OneWay, TargetNullValue={x:Static Visibility.Collapsed}, FallbackValue={x:Static Visibility.Collapsed}, Converter={x:Static hui:BindingSuccessToVisibilityVisibleConverter.Instance}}" />
+                <local:SettingsUserControl Grid.RowSpan="2" Visibility="{Binding IsChecked, Mode=TwoWay, ElementName=SettingsButton, Converter={x:Static hui:BooleanToVisibilityVisibleConverter.Instance}}" />
+            </Grid>
+            <Grid Grid.Row="1" Background="{DynamicResource PrimaryBackgroundBrush}">
+                <DockPanel Margin="32,12" LastChildFill="False">
+                    <Button Padding="12"
+                            Command="{Binding CloseCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=hui:Window}}"
+                            DockPanel.Dock="Right"
+                            Style="{DynamicResource ButtonTransparentStyle}">
+                        <Path Data="{StaticResource ExitGeometry}" Style="{StaticResource PathIcon18Style}" />
+                    </Button>
+                    <hui:DropDownButton Padding="12"
+                                        ArrowVisibility="Collapsed"
+                                        DockPanel.Dock="Right"
+                                        DropDownPlacement="Top"
+                                        Style="{DynamicResource HonooUI.DropDownButtonTransparentStyle}">
+                        <hui:DropDownButton.Header>
+                            <Path Data="{StaticResource InternetGeometry}" Style="{StaticResource PathIcon18Style}" />
+                        </hui:DropDownButton.Header>
+                        <Button hui:VehicleAttaches.Uri="https://github.com/LokiHonoo/Wireshelves/"
+                                Command="{Binding NavigateUriCommand}"
+                                CommandParameter="{Binding (hui:VehicleAttaches.Uri), RelativeSource={RelativeSource self}}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Path Data="{StaticResource GitHubGeometry}" Style="{StaticResource PathIcon18Style}" />
+                                <TextBlock Grid.Column="1"
+                                           Margin="7,0"
+                                           Text="GitHub" />
+                            </Grid>
+                        </Button>
+                    </hui:DropDownButton>
+                    <ToggleButton x:Name="SettingsButton"
+                                  Padding="12"
+                                  DockPanel.Dock="Right"
+                                  Style="{DynamicResource ToggleButtonTransparentStyle}">
+                        <Path Data="{StaticResource SettingGeometry}" Style="{StaticResource PathIcon18Style}" />
+                    </ToggleButton>
+                </DockPanel>
+            </Grid>
+        </Grid>
+        <hui:ToastHost x:Name="MainToastHost" VerticalAlignment="Top" />
+        <hui:DialogHost x:Name="MainDialogHost" />
+    </Grid>
+</hui:Window>

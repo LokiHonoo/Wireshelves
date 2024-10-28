@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="Wireshelves.AppItemUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:hui="https://github.com/lokihonoo/honooui.wpf"
+             xmlns:local="clr-namespace:Wireshelves"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Wireshelves.ViewModels"
+             Width="95"
+             Height="85"
+             d:Background="{DynamicResource SecondaryBackgroundBrush}"
+             d:DataContext="{d:DesignInstance Type=vm:AppItemViewModel}"
+             d:Foreground="{DynamicResource PrimaryForegroundBrush}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ScaleTransform x:Key="IconAreaZoomTransform" CenterX="30" CenterY="22" ScaleX="0.9" ScaleY="0.9" />
+    </UserControl.Resources>
+    <Button Padding="0"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Command="{Binding ProcessCommand}"
+            Style="{DynamicResource ButtonTransparentStyle}">
+        <b:Interaction.Triggers>
+            <b:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                <b:ChangePropertyAction PropertyName="RenderTransform"
+                                        TargetName="IconArea"
+                                        Value="{StaticResource IconAreaZoomTransform}" />
+            </b:EventTrigger>
+            <b:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                <b:ChangePropertyAction PropertyName="RenderTransform"
+                                        TargetName="IconArea"
+                                        Value="{x:Null}" />
+            </b:EventTrigger>
+            <b:EventTrigger EventName="MouseRightButtonUp">
+                <b:InvokeCommandAction Command="{Binding MouseRightButtonUpCommand}" />
+            </b:EventTrigger>
+        </b:Interaction.Triggers>
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid x:Name="IconArea"
+                  Width="60"
+                  Height="45"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <ContentControl Width="32"
+                                Height="32"
+                                Content="{Binding Icon}"
+                                ContentTemplateSelector="{x:Static hui:Icon32DataTemplateSelector.Instance}"
+                                Foreground="{Binding IconColorBrush}" />
+                <Path Data="{StaticResource WindowsGeometry}"
+                      Fill="{DynamicResource SecondaryForegroundBrush}"
+                      Style="{DynamicResource PathIcon32Style}"
+                      Visibility="{Binding Icon, Converter={x:Static hui:BindingSuccessToVisibilityCollapsedConverter.Instance}}" />
+                <Path Margin="4,0,0,2"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Bottom"
+                      Data="{StaticResource SquareFillGeometry}"
+                      Fill="White"
+                      Style="{StaticResource PathIcon18Style}"
+                      Visibility="{Binding Kind, Converter={x:Static hui:ObjectEqualParamToVisibilityVisibleConverter.Instance}, ConverterParameter={x:Static local:AppItemKind.Shortcut}}" />
+                <Path Margin="4,0,0,2"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Bottom"
+                      Data="{StaticResource ArrowUpRightSquareGeometry}"
+                      Stroke="{DynamicResource AccentBrush}"
+                      Style="{StaticResource PathIcon18Style}"
+                      Visibility="{Binding Kind, Converter={x:Static hui:ObjectEqualParamToVisibilityVisibleConverter.Instance}, ConverterParameter={x:Static local:AppItemKind.Shortcut}}" />
+                <Path Margin="0,0,4,2"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Bottom"
+                      Data="{StaticResource SecurityGeometry}"
+                      Fill="#FFFF9A33"
+                      Style="{StaticResource PathIcon18Style}"
+                      Visibility="{Binding RunAsAdministrator, Converter={x:Static hui:BooleanToVisibilityVisibleConverter.Instance}}" />
+            </Grid>
+            <TextBlock Grid.Row="1"
+                       d:Text="Microsoft 1990 114514 9527 llA3 46 Ki jJ"
+                       Block.TextAlignment="Center"
+                       FontSize="12"
+                       Text="{Binding Title}"
+                       TextWrapping="WrapWithOverflow" />
+        </Grid>
+    </Button>
+</UserControl>
