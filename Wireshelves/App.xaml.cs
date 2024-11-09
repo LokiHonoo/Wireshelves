@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Wireshelves.Models;
+using Wireshelves.ViewModels;
 
 namespace Wireshelves
 {
@@ -10,14 +10,14 @@ namespace Wireshelves
     {
         protected override void OnExit(ExitEventArgs e)
         {
-            Config.SaveSettings();
+            Settings.Instance.Save();
             base.OnExit(e);
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            Config.LoadSettings();
-            base.OnStartup(e);
+            base.OnStartup(e);            
+            Settings.Instance.Load();
         }
     }
 }

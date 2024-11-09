@@ -13,16 +13,11 @@
         /// <summary>
         ///
         /// </summary>
-        Shortcut,
-
-        /// <summary>
-        ///
-        /// </summary>
         Folder,
 
         /// <summary>
         ///
         /// </summary>
-        Uri,
+        Application,
     }
 }

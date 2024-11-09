@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wireshelves", "Wireshelves\Wireshelves.csproj", "{C81841E9-E291-4D7C-905A-04CDAAD3018A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{83567143-FFD1-4D37-B938-04461EC7DCCC}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wireshelves", "Wireshelves\Wireshelves.csproj", "{BCA95C17-F460-4CFE-AE23-934DC4A003BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C81841E9-E291-4D7C-905A-04CDAAD3018A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C81841E9-E291-4D7C-905A-04CDAAD3018A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C81841E9-E291-4D7C-905A-04CDAAD3018A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C81841E9-E291-4D7C-905A-04CDAAD3018A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA95C17-F460-4CFE-AE23-934DC4A003BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA95C17-F460-4CFE-AE23-934DC4A003BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA95C17-F460-4CFE-AE23-934DC4A003BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA95C17-F460-4CFE-AE23-934DC4A003BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

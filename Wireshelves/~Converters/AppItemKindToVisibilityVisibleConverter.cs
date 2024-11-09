@@ -1,6 +1,6 @@
-﻿using HonooUI.WPF;
-using System;
+﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Wireshelves
@@ -8,17 +8,9 @@ namespace Wireshelves
     /// <summary>
     ///
     /// </summary>
-    public sealed class ThemeStyleToCutomConverter : IValueConverter
+    public sealed class AppItemKindToVisibilityVisibleConverter : IValueConverter
     {
-        /// <summary>
-        ///
-        /// </summary>
-        public object? DarkValue { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public object? OtherValue { get; set; }
+        public static AppItemKindToVisibilityVisibleConverter Instance { get; } = new AppItemKindToVisibilityVisibleConverter();
 
         /// <summary>
         ///
@@ -30,7 +22,7 @@ namespace Wireshelves
         /// <returns></returns>
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (ThemeStyle)value == ThemeStyle.Dark ? this.DarkValue : this.OtherValue;
+            return (AppItemKind)value == AppItemKind.Application ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

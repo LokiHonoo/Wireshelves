@@ -7,15 +7,15 @@
 
 ## INTRODUCTION
 
-Lightweight software launcher.
+Lightweight software launcher. dragging, grouping supported.
 
 ## SCREENSHOTS
 
-![ScreenShot01](ScreenShot01.png)
+![screenshot1](screenshots\screenshot1.png)
 
-![ScreenShot02](ScreenShot02.png)
+![screenshot2](screenshots\screenshot2.png)
 
-![ScreenShot03](ScreenShot03.png)
+![screenshot3](screenshots\screenshot3.png)
 
 ## LICENSE
 

@@ -1,9 +1,9 @@
 ﻿namespace Wireshelves
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow :  HonooUI.WPF.Controls.Window
+    public partial class MainWindow : HonooUI.WPF.Controls.Window
     {
         public MainWindow()
         {
