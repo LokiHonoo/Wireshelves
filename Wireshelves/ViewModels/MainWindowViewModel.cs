@@ -586,6 +586,22 @@ namespace Wireshelves.ViewModels
                         }
                         break;
 
+                    case "Run":
+                        if (File.Exists(this.CurrentAppItem.FullName) || Directory.Exists(this.CurrentAppItem.FullName))
+                        {
+                            var info = new ProcessStartInfo(this.CurrentAppItem.FullName) { UseShellExecute = true };
+                            if (this.CurrentAppItem.Kind == AppItemKind.Application)
+                            {
+                                info.Arguments = this.CurrentAppItem.Arguments;
+                            }
+                            Process.Start(info);
+                        }
+                        else
+                        {
+                            ToastManager.Default.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastOptions.Exclamation, null);
+                        }
+                        break;
+
                     case "Close": default: break;
                 }
                 this.CurrentAppItem = null;

@@ -116,13 +116,14 @@ namespace Wireshelves.ViewModels
                     {
                         try
                         {
-                            using (var manager = new XConfigManager(file.FullName))
+                            var pairs = LanguagePackage.GetInformation(file.FullName);
+                            if (pairs.TryGetValue("AppName", out string? appName)&& appName == "")
                             {
-                                string langName = manager.Default.Properties.GetStringValue("LangName");
-                                if (langName != "Default")
-                                {
-                                    this.Languages.Add(langName, file.FullName);
-                                }
+
+                            }
+                            if (pairs.TryGetValue("LangName", out string? langName) && langName != "Default")
+                            {
+                                this.Languages.Add(langName, file.FullName);
                             }
                         }
                         catch
@@ -137,10 +138,10 @@ namespace Wireshelves.ViewModels
             }
             using (var manager = new XConfigManager(_configFile, true))
             {
-                this.WindowLeft = manager.Default.Properties.GetValue("WindowLeft", new XString("200")).GetDoubleValue();
-                this.WindowTop = manager.Default.Properties.GetValue("WindowTop", new XString("600")).GetDoubleValue();
+                this.WindowLeft = manager.Default.Properties.GetValue("WindowLeft", new XString("600")).GetDoubleValue();
+                this.WindowTop = manager.Default.Properties.GetValue("WindowTop", new XString("200")).GetDoubleValue();
                 this.ThemeStyle = manager.Default.Properties.GetValue("ThemeStyle", new XString(HonooUI.WPF.ThemeStyle.Dark.ToString())).GetEnumValue<ThemeStyle>();
-                this.Pinned = manager.Default.Properties.GetValue("Pinned", new XString("False")).GetBooleanValue();
+                this.Pinned = manager.Default.Properties.GetValue("Pinned", new XString("True")).GetBooleanValue();
                 int col = manager.Default.Properties.GetValue("ShelfCol", new XString("5")).GetInt32Value();
                 int row = manager.Default.Properties.GetValue("ShelfRow", new XString("5")).GetInt32Value();
                 this.ShelfCol = col < 5 || col > 12 ? 5 : col;

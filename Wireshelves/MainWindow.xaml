@@ -121,10 +121,10 @@
                     <MenuItem
                         Command="{Binding AddPageCommand}"
                         CommandParameter="Previous"
-                        Header="Add Previous">
+                        Header="{Binding Main.AddPreviousPage, Source={x:Static vm:LanguagePackage.Instance}}">
                         <MenuItem.Icon>
                             <Path
-                                Data="{StaticResource ArrowExpandUpGeometry}"
+                                Data="{StaticResource SquareHalfTopFillGeometry}"
                                 Fill="{DynamicResource PrimaryForegroundBrush}"
                                 Style="{StaticResource PathIcon16Style}" />
                         </MenuItem.Icon>
@@ -132,10 +132,10 @@
                     <MenuItem
                         Command="{Binding AddPageCommand}"
                         CommandParameter="Next"
-                        Header="Add Next">
+                        Header="{Binding Main.AddNextPage, Source={x:Static vm:LanguagePackage.Instance}}">
                         <MenuItem.Icon>
                             <Path
-                                Data="{StaticResource ArrowExpandDownGeometry}"
+                                Data="{StaticResource SquareHalfBottomFillGeometry}"
                                 Fill="{DynamicResource PrimaryForegroundBrush}"
                                 Style="{StaticResource PathIcon16Style}" />
                         </MenuItem.Icon>
@@ -349,12 +349,14 @@
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
                             <hui:GroupBox.Header>
-                                <TextBox
+                                <hui:TextBox
                                     Width="300"
                                     VerticalAlignment="Center"
                                     d:Text="Title"
                                     MaxLength="30"
-                                    Text="{Binding GroupTitle, Mode=TwoWay}" />
+                                    Text="{Binding GroupTitle, Mode=TwoWay}"
+                                    TextAlignment="Center"
+                                    TrayBorderEventVisibility="FocusVisible" />
                             </hui:GroupBox.Header>
                             <ListBox
                                 Margin="20,0,20,20"
@@ -428,9 +430,8 @@
                         </hui:GroupBox>
                     </hui:DropShadowDecorator>
                 </Grid>
-
                 <!--  文件右键菜单  -->
-                <Grid d:Visibility="Collapsed" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
+                <Grid d:Visibility="Visible" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
                     <Button
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding CloseItemMenuCommand}"
@@ -482,12 +483,13 @@
                                                 <d:Path Data="{StaticResource FileBreakGeometry}" Style="{StaticResource PathIcon32Style}" />
                                             </d:ContentControl.Content>
                                         </ContentControl>
-                                        <TextBox
+                                        <hui:TextBox
                                             Margin="20,0,20,0"
                                             VerticalAlignment="Center"
                                             d:Text="Title"
                                             MaxLength="30"
-                                            Text="{Binding Title, Mode=TwoWay}" />
+                                            Text="{Binding Title, Mode=TwoWay}"
+                                            TrayBorderEventVisibility="FocusVisible" />
                                     </DockPanel>
                                 </hui:GroupBox.Header>
                                 <StackPanel>
@@ -499,12 +501,27 @@
                                         <hui:TextBox
                                             Margin="20,0,20,0"
                                             VerticalAlignment="Center"
-                                            DockPanel.Dock="Left">
+                                            DockPanel.Dock="Left"
+                                            TrayBorderEventVisibility="FocusVisible">
                                             <hui:TextBox.Header>
                                                 <Label Content="{Binding AppItem.Arguments, Source={x:Static vm:LanguagePackage.Instance}, Mode=TwoWay}" Style="{StaticResource LabelHeaderStyle}" />
                                             </hui:TextBox.Header>
                                         </hui:TextBox>
                                     </Border>
+                                    <Button
+                                        Height="48"
+                                        Margin="0,5,0,0"
+                                        Command="{Binding CloseItemMenuCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
+                                        CommandParameter="Run"
+                                        Style="{DynamicResource ButtonContainerStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Path Data="{StaticResource ApplicationGeometry}" Style="{StaticResource PathIcon16Style}" />
+                                            <TextBlock
+                                                Margin="20,0,0,0"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding AppItem.Run, Source={x:Static vm:LanguagePackage.Instance}}" />
+                                        </StackPanel>
+                                    </Button>
                                     <Grid Margin="0,5,0,0" Visibility="{Binding Kind, Converter={x:Static local:AppItemKindToVisibilityVisibleConverter.Instance}}">
                                         <Button
                                             Height="48"
@@ -565,6 +582,7 @@
                                         <CheckBox
                                             Margin="0,0,50,0"
                                             HorizontalAlignment="Right"
+                                            Content="{Binding AppItem.AllowsRemove, Source={x:Static vm:LanguagePackage.Instance}}"
                                             IsChecked="{Binding AllowRemove, Mode=TwoWay, Source={x:Static vm:Settings.Instance}}"
                                             Style="{DynamicResource CheckBoxSwitchRightStyle}" />
                                     </Grid>
@@ -587,7 +605,7 @@
                     </StackPanel>
                 </Grid>
                 <!--  设置页  -->
-                <Grid d:Visibility="Visible" Visibility="{Binding SettingsMenuVisibility}">
+                <Grid d:Visibility="Collapsed" Visibility="{Binding SettingsMenuVisibility}">
                     <Button
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding ToggleSettingsMenuCommand}"
