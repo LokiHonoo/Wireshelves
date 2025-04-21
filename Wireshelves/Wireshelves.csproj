@@ -20,7 +20,7 @@
 		<EnableNETAnalyzers>True</EnableNETAnalyzers>
 		<VersionPrefix>1.0.1</VersionPrefix>
 		<BaseOutputPath>..\bin\</BaseOutputPath>
-		<Description>Lightweight software launcher.</Description>
+		<Description>Lightweight software launcher. dragging, grouping supported.</Description>
 		<PackageIcon></PackageIcon>
 		<ApplicationIcon>Wireshelves.ico</ApplicationIcon>
 	</PropertyGroup>
