@@ -597,6 +597,10 @@ namespace Wireshelves.ViewModels
                             {
                                 info.Arguments = this.CurrentAppItem.Arguments;
                             }
+                            if (this.CurrentAppItem.Privilege)
+                            {
+                                info.Verb = "runas";
+                            }
                             Process.Start(info);
                         }
                         else

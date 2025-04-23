@@ -454,7 +454,7 @@
                     </hui:DropShadowDecorator>
                 </Grid>
                 <!--  文件右键菜单  -->
-                <Grid d:Visibility="Collapsed" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
+                <Grid d:Visibility="Visible" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
                     <Button
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding CloseItemMenuCommand}"
@@ -636,7 +636,7 @@
                     </StackPanel>
                 </Grid>
                 <!--  设置页  -->
-                <Grid d:Visibility="Visible" Visibility="{Binding SettingsMenuVisibility}">
+                <Grid d:Visibility="Collapsed" Visibility="{Binding SettingsMenuVisibility}">
                     <Button
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding ToggleSettingsMenuCommand}"
