@@ -11,11 +11,11 @@ Lightweight software launcher. dragging, grouping, multi-language supported.
 
 ## SCREENSHOTS
 
-![screenshot1](screenshots\screenshot1.png)
+![screenshot1](screenshots/screenshot1.png)
 
-![screenshot2](screenshots\screenshot2.png)
+![screenshot2](screenshots/screenshot2.png)
 
-![screenshot3](screenshots\screenshot3.png)
+![screenshot3](screenshots/screenshot3.png)
 
 ## LICENSE
 
