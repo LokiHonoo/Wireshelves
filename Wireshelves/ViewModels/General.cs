@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Reflection;
 
 namespace Wireshelves.ViewModels
 {
@@ -10,7 +11,18 @@ namespace Wireshelves.ViewModels
 
         #endregion Instance
 
+        #region Members
+
         [ObservableProperty]
         private bool _modified;
+
+        public string Version { get; }
+
+        #endregion Members
+
+        public General()
+        {
+            this.Version = Assembly.GetExecutingAssembly().GetName().Version!.ToString(3);
+        }
     }
 }

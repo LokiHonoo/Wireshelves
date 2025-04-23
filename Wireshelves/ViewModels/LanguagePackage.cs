@@ -48,7 +48,7 @@ namespace Wireshelves.ViewModels
         /// <summary>
         /// Managed translation entries count.
         /// </summary>
-        public int Count { get; } = 42;
+        public int Count { get; } = 43;
 
         #region Sections
 
@@ -994,6 +994,7 @@ namespace Wireshelves.ViewModels
             private const string _settings_c = "Settings title.";
             private const string _shelfSize_c = "Settings title shelf size.";
             private const string _themeStyle_c = "Settings title theme style.";
+            private const string _versionName_c = "Version name text.";
 
             #endregion Comments
 
@@ -1002,6 +1003,7 @@ namespace Wireshelves.ViewModels
             private const string _settings_d = "Settings";
             private const string _shelfSize_d = "Shelf size";
             private const string _themeStyle_d = "Theme Style";
+            private const string _versionName_d = "Version";
 
             #endregion Default
 
@@ -1010,6 +1012,7 @@ namespace Wireshelves.ViewModels
             private string _settings = _settings_d;
             private string _shelfSize = _shelfSize_d;
             private string _themeStyle = _themeStyle_d;
+            private string _versionName = _versionName_d;
 
             /// <summary>
             /// Settings title.
@@ -1028,6 +1031,12 @@ namespace Wireshelves.ViewModels
             /// </summary>
             public string ThemeStyle
             { get { return _themeStyle; } set { OnPropertyChanging(nameof(this.ThemeStyle)); _themeStyle = value; OnPropertyChanged(nameof(this.ThemeStyle)); } }
+
+            /// <summary>
+            /// Version name text.
+            /// </summary>
+            public string VersionName
+            { get { return _versionName; } set { OnPropertyChanging(nameof(this.VersionName)); _versionName = value; OnPropertyChanged(nameof(this.VersionName)); } }
 
             #endregion Members
 
@@ -1072,6 +1081,7 @@ namespace Wireshelves.ViewModels
                     this.Settings = __GetTranslationEntryInternal(section, "Settings", _settings_d, missing, ref loaded);
                     this.ShelfSize = __GetTranslationEntryInternal(section, "ShelfSize", _shelfSize_d, missing, ref loaded);
                     this.ThemeStyle = __GetTranslationEntryInternal(section, "ThemeStyle", _themeStyle_d, missing, ref loaded);
+                    this.VersionName = __GetTranslationEntryInternal(section, "VersionName", _versionName_d, missing, ref loaded);
                     return loaded;
                 }
                 else
@@ -1079,6 +1089,7 @@ namespace Wireshelves.ViewModels
                     missing.Add("Settings");
                     missing.Add("ShelfSize");
                     missing.Add("ThemeStyle");
+                    missing.Add("VersionName");
                     return 0;
                 }
             }
@@ -1088,6 +1099,7 @@ namespace Wireshelves.ViewModels
                 this.Settings = _settings_d;
                 this.ShelfSize = _shelfSize_d;
                 this.ThemeStyle = _themeStyle_d;
+                this.VersionName = _versionName_d;
             }
 
             private void __SaveInternal(bool defaultField, XConfigManager manager)
@@ -1098,12 +1110,14 @@ namespace Wireshelves.ViewModels
                     section.Properties.AddString("Settings", _settings_d).Comment.SetValue(_settings_c, true);
                     section.Properties.AddString("ShelfSize", _shelfSize_d).Comment.SetValue(_shelfSize_c, true);
                     section.Properties.AddString("ThemeStyle", _themeStyle_d).Comment.SetValue(_themeStyle_c, true);
+                    section.Properties.AddString("VersionName", _versionName_d).Comment.SetValue(_versionName_c, true);
                 }
                 else
                 {
                     section.Properties.AddString("Settings", this.Settings).Comment.SetValue(_settings_c, true);
                     section.Properties.AddString("ShelfSize", this.ShelfSize).Comment.SetValue(_shelfSize_c, true);
                     section.Properties.AddString("ThemeStyle", this.ThemeStyle).Comment.SetValue(_themeStyle_c, true);
+                    section.Properties.AddString("VersionName", this.VersionName).Comment.SetValue(_versionName_c, true);
                 }
             }
         }

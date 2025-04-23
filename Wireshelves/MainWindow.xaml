@@ -539,10 +539,18 @@
                                         Style="{DynamicResource ButtonContainerStyle}">
                                         <StackPanel Orientation="Horizontal">
                                             <Path Data="{StaticResource ApplicationGeometry}" Style="{StaticResource PathIcon16Style}" />
-                                            <TextBlock
-                                                Margin="20,0,0,0"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding AppItem.Run, Source={x:Static vm:LanguagePackage.Instance}}" />
+                                            <Grid>
+                                                <TextBlock
+                                                    Margin="20,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{Binding AppItem.Run, Source={x:Static vm:LanguagePackage.Instance}}"
+                                                    Visibility="{Binding Privilege, Converter={x:Static hui:BooleanToVisibilityCollapsedConverter.Instance}}" />
+                                                <TextBlock
+                                                    Margin="20,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{Binding AppItem.RunAsAdministrator, Source={x:Static vm:LanguagePackage.Instance}}"
+                                                    Visibility="{Binding Privilege, Converter={x:Static hui:BooleanToVisibilityVisibleConverter.Instance}}" />
+                                            </Grid>
                                         </StackPanel>
                                     </Button>
                                     <Grid Margin="0,5,0,0" Visibility="{Binding Kind, Converter={x:Static local:AppItemKindToVisibilityVisibleConverter.Instance}}">
@@ -628,7 +636,7 @@
                     </StackPanel>
                 </Grid>
                 <!--  设置页  -->
-                <Grid d:Visibility="Collapsed" Visibility="{Binding SettingsMenuVisibility}">
+                <Grid d:Visibility="Visible" Visibility="{Binding SettingsMenuVisibility}">
                     <Button
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding ToggleSettingsMenuCommand}"
@@ -642,16 +650,53 @@
                         DropShadowPlacement="BottomRight">
                         <hui:GroupBox Background="{DynamicResource SecondaryBackgroundBrush}" HeaderBackground="{DynamicResource PrimaryBackgroundBrush}">
                             <hui:GroupBox.Header>
-                                <StackPanel Orientation="Horizontal">
+                                <DockPanel>
                                     <Path
                                         Margin="20,0,0,0"
                                         Data="{StaticResource SettingGeometry}"
+                                        DockPanel.Dock="Left"
                                         Style="{StaticResource PathIcon32Style}" />
                                     <TextBlock
                                         Margin="20,0,0,0"
                                         VerticalAlignment="Center"
+                                        DockPanel.Dock="Left"
                                         Text="{Binding Settings.Settings, Source={x:Static vm:LanguagePackage.Instance}}" />
-                                </StackPanel>
+                                    <StackPanel
+                                        Margin="0,0,20,0"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Right">
+                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                            <Button
+                                                hui:UriValueAttached.Item1="https://github.com/LokiHonoo/Wireshelves"
+                                                Command="{Binding OpenUriCommand}"
+                                                CommandParameter="{Binding Path=(hui:UriValueAttached.Item1), RelativeSource={RelativeSource Mode=Self}}"
+                                                Cursor="Hand"
+                                                Style="{DynamicResource ButtonTransparentStyle}">
+                                                <Path
+                                                    Data="{StaticResource GitHubGeometry}"
+                                                    Fill="{DynamicResource ThirdlyForegroundBrush}"
+                                                    Style="{StaticResource PathIcon20Style}" />
+                                            </Button>
+                                            <TextBlock
+                                                Margin="10,0,0,0"
+                                                VerticalAlignment="Center"
+                                                Foreground="{DynamicResource ThirdlyForegroundBrush}"
+                                                Text="{Binding Settings.VersionName, Source={x:Static vm:LanguagePackage.Instance}}" />
+                                            <TextBlock
+                                                Margin="4,0,0,0"
+                                                VerticalAlignment="Center"
+                                                Foreground="{DynamicResource ThirdlyForegroundBrush}"
+                                                Text="{Binding Version, Source={x:Static vm:General.Instance}}" />
+                                        </StackPanel>
+                                        <TextBlock
+                                            Margin="0,2"
+                                            HorizontalAlignment="Right"
+                                            FontSize="11"
+                                            Foreground="{DynamicResource FifthForegroundBrush}">
+                                            Copyright (C) Loki Honoo 2023. All rights reserved.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DockPanel>
                             </hui:GroupBox.Header>
                             <StackPanel>
                                 <Border
@@ -807,39 +852,6 @@
                         Style="{DynamicResource ButtonTransparentStyle}"
                         ToolTip="{Binding Settings.Settings, Source={x:Static vm:LanguagePackage.Instance}}"
                         ToolTipService.Placement="Top" />
-                    <hui:MenuButton
-                        Margin="2"
-                        Padding="10"
-                        VerticalAlignment="Center"
-                        ArrowVisibility="Collapsed"
-                        DropDownPlacement="Top"
-                        Header="{StaticResource LayersFillGeometry}"
-                        HeaderTemplate="{StaticResource GeometryToPathIcon16DataTemplate}"
-                        Style="{DynamicResource HuiMenuButtonTransparentStyle}"
-                        ToolTip="{Binding Main.AppInfoButtonTip, Source={x:Static vm:LanguagePackage.Instance}}"
-                        ToolTipService.Placement="Top">
-                        <MenuItem Header="Update" IsEnabled="False">
-                            <MenuItem.Icon>
-                                <Path
-                                    Data="{StaticResource WebGeometry}"
-                                    Fill="{DynamicResource PrimaryForegroundBrush}"
-                                    Style="{StaticResource PathIcon16Style}" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem
-                            hui:UriValueAttached.Item1="https://github.com/LokiHonoo/Wireshelves"
-                            Command="{Binding OpenUriCommand}"
-                            CommandParameter="{Binding Path=(hui:UriValueAttached.Item1), RelativeSource={RelativeSource Mode=Self}}"
-                            Header="Github">
-                            <MenuItem.Icon>
-                                <Path
-                                    Data="{StaticResource GitHubGeometry}"
-                                    Fill="{DynamicResource PrimaryForegroundBrush}"
-                                    Style="{StaticResource PathIcon16Style}" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                    </hui:MenuButton>
                     <Button
                         Margin="2"
                         Padding="10"
