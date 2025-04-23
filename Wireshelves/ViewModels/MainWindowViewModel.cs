@@ -53,8 +53,11 @@ namespace Wireshelves.ViewModels
         [ObservableProperty]
         private Visibility _settingsMenuVisibility = Visibility.Collapsed;
 
+        private int _shelfCol;
+        private int _shelfRow;
         private FrameworkElement? _targetElement = null;
         private int _wheelTimestamp;
+
         public ICommand AddPageCommand { get; }
         public ICommand AppItemClickCommand { get; }
         public ICommand AppItemDropCommand { get; }
@@ -78,13 +81,12 @@ namespace Wireshelves.ViewModels
         public ICommand MoveToPreviousPageCommand { get; }
         public ICommand OpenUriCommand { get; }
         public ICommand RemoveGroupCommand { get; }
+        public ICommand RemovePageCommand { get; }
         public ICommand SetLocationCommand { get; }
         public ICommand ToggleSettingsMenuCommand { get; }
         public ICommand WindowClosingCommand { get; }
         public ICommand WindowDeactivatedCommand { get; }
         public ICommand WindowLoadedCommand { get; }
-        private int _shelfCol;
-        private int _shelfRow;
 
         #endregion Members
 
@@ -116,6 +118,7 @@ namespace Wireshelves.ViewModels
             this.MoveToPreviousPageCommand = new RelayCommand(MoveToPreviousPageCommandExecute);
             this.MoveToNextPageCommand = new RelayCommand(MoveToNextPageCommandExecute);
             this.RemoveGroupCommand = new RelayCommand(RemoveGroupCommandExecute);
+            this.RemovePageCommand = new RelayCommand(RemovePageCommandExecute);
             this.ToggleSettingsMenuCommand = new RelayCommand<DragEventArgs>(ToggleSettingsMenuCommandExecute);
             this.OpenUriCommand = new RelayCommand<Uri>(OpenUriCommandExecute);
 
@@ -124,14 +127,9 @@ namespace Wireshelves.ViewModels
             Settings.Instance.PropertyChanged += OnSettingsPropertyChanged;
         }
 
-        private void OnSettingsPropertyChanging(object? sender, PropertyChangingEventArgs e)
+        private void OnAppItemPagesChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.PropertyName)
-            {
-                case nameof(Settings.Instance.ShelfCol): _shelfCol = Settings.Instance.ShelfCol; break;
-                case nameof(Settings.Instance.ShelfRow): _shelfRow = Settings.Instance.ShelfRow; break;
-                default: break;
-            }
+            General.Instance.Modified = true;
         }
 
         private void OnSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -167,9 +165,14 @@ namespace Wireshelves.ViewModels
             }
         }
 
-        private void OnAppItemPagesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        private void OnSettingsPropertyChanging(object? sender, PropertyChangingEventArgs e)
         {
-            General.Instance.Modified = true;
+            switch (e.PropertyName)
+            {
+                case nameof(Settings.Instance.ShelfCol): _shelfCol = Settings.Instance.ShelfCol; break;
+                case nameof(Settings.Instance.ShelfRow): _shelfRow = Settings.Instance.ShelfRow; break;
+                default: break;
+            }
         }
 
         #endregion Construction
@@ -872,6 +875,40 @@ namespace Wireshelves.ViewModels
             this.CurrentAppItemGroup = null;
             this.CurrentAppItem = null;
             this.Editing = null;
+        }
+
+        private void RemovePageCommandExecute()
+        {
+            if (this.CurrentAppItemPage != null && this.CurrentAppItemPage.AppItemGroups.Count == 0)
+            {
+                int index = -1;
+                for (int i = this.AppItemPages.Count - 1; i >= 0; i--)
+                {
+                    if (this.AppItemPages[i] == this.CurrentAppItemPage)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index >= 0)
+                {
+                    this.AppItemPages.RemoveAt(index);
+                    if (this.AppItemPages.Count == 0)
+                    {
+                        var page = new AppItemPage(Guid.NewGuid().ToString());
+                        this.AppItemPages.Add(page);
+                        this.CurrentAppItemPage = page;
+                    }
+                    else if (index > this.AppItemPages.Count - 1)
+                    {
+                        this.CurrentAppItemPage = this.AppItemPages[^1];
+                    }
+                    else
+                    {
+                        this.CurrentAppItemPage = this.AppItemPages[index];
+                    }
+                }
+            }
         }
 
         private void SetLocationCommandExecute(HonooUI.WPF.Controls.Window? window)

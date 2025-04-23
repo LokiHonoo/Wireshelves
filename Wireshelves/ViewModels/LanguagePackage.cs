@@ -36,11 +36,6 @@ namespace Wireshelves.ViewModels
         #region Members
 
         /// <summary>
-        /// Managed translation entries count.
-        /// </summary>
-        public int Count { get; } = 40;
-
-        /// <summary>
         /// Language package creator.
         /// </summary>
         public const string CREATOR = "Honoo Language Localisation Converter 1.0.5";
@@ -50,27 +45,12 @@ namespace Wireshelves.ViewModels
         /// </summary>
         public const string WEBSITE = "https://github.com/LokiHonoo/Honoo-Language-Localisation-Converter";
 
+        /// <summary>
+        /// Managed translation entries count.
+        /// </summary>
+        public int Count { get; } = 42;
+
         #region Sections
-
-        /// <summary>
-        /// Information section.
-        /// </summary>
-        public __Information Information { get; } = new __Information();
-
-        /// <summary>
-        /// DialogButton section.
-        /// </summary>
-        public __DialogButton DialogButton { get; } = new __DialogButton();
-
-        /// <summary>
-        /// Main section.
-        /// </summary>
-        public __Main Main { get; } = new __Main();
-
-        /// <summary>
-        /// Settings section.
-        /// </summary>
-        public __Settings Settings { get; } = new __Settings();
 
         /// <summary>
         /// AppItem section.
@@ -78,9 +58,29 @@ namespace Wireshelves.ViewModels
         public __AppItem AppItem { get; } = new __AppItem();
 
         /// <summary>
+        /// DialogButton section.
+        /// </summary>
+        public __DialogButton DialogButton { get; } = new __DialogButton();
+
+        /// <summary>
+        /// Information section.
+        /// </summary>
+        public __Information Information { get; } = new __Information();
+
+        /// <summary>
+        /// Main section.
+        /// </summary>
+        public __Main Main { get; } = new __Main();
+
+        /// <summary>
         /// Messages section.
         /// </summary>
         public __Messages Messages { get; } = new __Messages();
+
+        /// <summary>
+        /// Settings section.
+        /// </summary>
+        public __Settings Settings { get; } = new __Settings();
 
         #endregion Sections
 
@@ -296,12 +296,12 @@ namespace Wireshelves.ViewModels
 
             private const string _appName_c = "";
             private const string _appVer_c = "";
-            private const string _langName_c = "";
-            private const string _langVer_c = "";
             private const string _author_c = "";
             private const string _email_c = "";
-            private const string _website_c = "";
+            private const string _langName_c = "";
+            private const string _langVer_c = "";
             private const string _remarks_c = "";
+            private const string _website_c = "";
 
             #endregion Comments
 
@@ -309,12 +309,12 @@ namespace Wireshelves.ViewModels
 
             private const string _appName_d = "Wireshelves";
             private const string _appVer_d = "1.x";
-            private const string _langName_d = "en-US";
-            private const string _langVer_d = "00";
             private const string _author_d = "Honoo Language Localisation Converter";
             private const string _email_d = "";
-            private const string _website_d = "https://github.com/LokiHonoo/Honoo-Language-Localisation-Converter";
+            private const string _langName_d = "en-US";
+            private const string _langVer_d = "00";
             private const string _remarks_d = "";
+            private const string _website_d = "https://github.com/LokiHonoo/Honoo-Language-Localisation-Converter";
 
             #endregion Default
 
@@ -322,52 +322,60 @@ namespace Wireshelves.ViewModels
 
             private string _appName = _appName_d;
             private string _appVer = _appVer_d;
-            private string _langName = _langName_d;
-            private string _langVer = _langVer_d;
             private string _author = _author_d;
             private string _email = _email_d;
-            private string _website = _website_d;
+            private string _langName = _langName_d;
+            private string _langVer = _langVer_d;
             private string _remarks = _remarks_d;
+            private string _website = _website_d;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string AppName { get { return _appName; } set { OnPropertyChanging(nameof(this.AppName)); _appName = value; OnPropertyChanged(nameof(this.AppName)); } }
+            public string AppName
+            { get { return _appName; } set { OnPropertyChanging(nameof(this.AppName)); _appName = value; OnPropertyChanged(nameof(this.AppName)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string AppVer { get { return _appVer; } set { OnPropertyChanging(nameof(this.AppVer)); _appVer = value; OnPropertyChanged(nameof(this.AppVer)); } }
+            public string AppVer
+            { get { return _appVer; } set { OnPropertyChanging(nameof(this.AppVer)); _appVer = value; OnPropertyChanged(nameof(this.AppVer)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string LangName { get { return _langName; } set { OnPropertyChanging(nameof(this.LangName)); _langName = value; OnPropertyChanged(nameof(this.LangName)); } }
+            public string Author
+            { get { return _author; } set { OnPropertyChanging(nameof(this.Author)); _author = value; OnPropertyChanged(nameof(this.Author)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string LangVer { get { return _langVer; } set { OnPropertyChanging(nameof(this.LangVer)); _langVer = value; OnPropertyChanged(nameof(this.LangVer)); } }
+            public string Email
+            { get { return _email; } set { OnPropertyChanging(nameof(this.Email)); _email = value; OnPropertyChanged(nameof(this.Email)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string Author { get { return _author; } set { OnPropertyChanging(nameof(this.Author)); _author = value; OnPropertyChanged(nameof(this.Author)); } }
+            public string LangName
+            { get { return _langName; } set { OnPropertyChanging(nameof(this.LangName)); _langName = value; OnPropertyChanged(nameof(this.LangName)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string Email { get { return _email; } set { OnPropertyChanging(nameof(this.Email)); _email = value; OnPropertyChanged(nameof(this.Email)); } }
+            public string LangVer
+            { get { return _langVer; } set { OnPropertyChanging(nameof(this.LangVer)); _langVer = value; OnPropertyChanged(nameof(this.LangVer)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string Website { get { return _website; } set { OnPropertyChanging(nameof(this.Website)); _website = value; OnPropertyChanged(nameof(this.Website)); } }
+            public string Remarks
+            { get { return _remarks; } set { OnPropertyChanging(nameof(this.Remarks)); _remarks = value; OnPropertyChanged(nameof(this.Remarks)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string Remarks { get { return _remarks; } set { OnPropertyChanging(nameof(this.Remarks)); _remarks = value; OnPropertyChanged(nameof(this.Remarks)); } }
+            public string Website
+            { get { return _website; } set { OnPropertyChanging(nameof(this.Website)); _website = value; OnPropertyChanged(nameof(this.Website)); } }
 
             #endregion Members
 
@@ -471,7 +479,6 @@ namespace Wireshelves.ViewModels
                     section.Properties.AddString("Remarks", this.Remarks).Comment.SetValue(_remarks_c, true);
                 }
             }
-
         }
 
         #endregion Information
@@ -534,24 +541,28 @@ namespace Wireshelves.ViewModels
             private string _yesText = _yesText_d;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string CancelText { get { return _cancelText; } set { OnPropertyChanging(nameof(this.CancelText)); _cancelText = value; OnPropertyChanged(nameof(this.CancelText)); } }
+            public string CancelText
+            { get { return _cancelText; } set { OnPropertyChanging(nameof(this.CancelText)); _cancelText = value; OnPropertyChanged(nameof(this.CancelText)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string NoText { get { return _noText; } set { OnPropertyChanging(nameof(this.NoText)); _noText = value; OnPropertyChanged(nameof(this.NoText)); } }
+            public string NoText
+            { get { return _noText; } set { OnPropertyChanging(nameof(this.NoText)); _noText = value; OnPropertyChanged(nameof(this.NoText)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string OkText { get { return _okText; } set { OnPropertyChanging(nameof(this.OkText)); _okText = value; OnPropertyChanged(nameof(this.OkText)); } }
+            public string OkText
+            { get { return _okText; } set { OnPropertyChanging(nameof(this.OkText)); _okText = value; OnPropertyChanged(nameof(this.OkText)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string YesText { get { return _yesText; } set { OnPropertyChanging(nameof(this.YesText)); _yesText = value; OnPropertyChanged(nameof(this.YesText)); } }
+            public string YesText
+            { get { return _yesText; } set { OnPropertyChanging(nameof(this.YesText)); _yesText = value; OnPropertyChanged(nameof(this.YesText)); } }
 
             #endregion Members
 
@@ -635,7 +646,6 @@ namespace Wireshelves.ViewModels
                     section.Properties.AddString("YesText", this.YesText).Comment.SetValue(_yesText_c, true);
                 }
             }
-
         }
 
         #endregion DialogButton
@@ -678,14 +688,16 @@ namespace Wireshelves.ViewModels
             private const string _addPageTip_c = "";
             private const string _addPreviousPage_c = "";
             private const string _appInfoButtonTip_c = "";
-            private const string _emptyPageText_c = "";
+            private const string _emptyPageDescription_c = "";
             private const string _exitButtonTip_c = "";
             private const string _locateButtonTip_c = "";
             private const string _moveOutGroup_c = "";
             private const string _moveToNextPage_c = "";
             private const string _moveToPreviousPage_c = "";
+            private const string _pinDescription_c = "";
             private const string _pinTip_c = "";
             private const string _removeGroup_c = "";
+            private const string _removePage_c = "";
 
             #endregion Comments
 
@@ -695,14 +707,16 @@ namespace Wireshelves.ViewModels
             private const string _addPageTip_d = "Add new page";
             private const string _addPreviousPage_d = "Add Previous Page";
             private const string _appInfoButtonTip_d = "Application information";
-            private const string _emptyPageText_d = "Pin the application to stay for drop file into here.\r\n\r\nEmpty page will be removed at next starts.";
+            private const string _emptyPageDescription_d = "Empty page will be removed at next starts.";
             private const string _exitButtonTip_d = "Exit";
             private const string _locateButtonTip_d = "Locate Window to bottom";
             private const string _moveOutGroup_d = "Move out from Group";
             private const string _moveToNextPage_d = "Move to Next Page";
             private const string _moveToPreviousPage_d = "Move to Previous Page";
+            private const string _pinDescription_d = "Pin the application to stay for drop file in.";
             private const string _pinTip_d = "Pin the application to stay";
             private const string _removeGroup_d = "Remove Group...";
+            private const string _removePage_d = "Remove Page";
 
             #endregion Default
 
@@ -712,74 +726,100 @@ namespace Wireshelves.ViewModels
             private string _addPageTip = _addPageTip_d;
             private string _addPreviousPage = _addPreviousPage_d;
             private string _appInfoButtonTip = _appInfoButtonTip_d;
-            private string _emptyPageText = _emptyPageText_d;
+            private string _emptyPageDescription = _emptyPageDescription_d;
             private string _exitButtonTip = _exitButtonTip_d;
             private string _locateButtonTip = _locateButtonTip_d;
             private string _moveOutGroup = _moveOutGroup_d;
             private string _moveToNextPage = _moveToNextPage_d;
             private string _moveToPreviousPage = _moveToPreviousPage_d;
+            private string _pinDescription = _pinDescription_d;
             private string _pinTip = _pinTip_d;
             private string _removeGroup = _removeGroup_d;
+            private string _removePage = _removePage_d;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string AddNextPage { get { return _addNextPage; } set { OnPropertyChanging(nameof(this.AddNextPage)); _addNextPage = value; OnPropertyChanged(nameof(this.AddNextPage)); } }
+            public string AddNextPage
+            { get { return _addNextPage; } set { OnPropertyChanging(nameof(this.AddNextPage)); _addNextPage = value; OnPropertyChanged(nameof(this.AddNextPage)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string AddPageTip { get { return _addPageTip; } set { OnPropertyChanging(nameof(this.AddPageTip)); _addPageTip = value; OnPropertyChanged(nameof(this.AddPageTip)); } }
+            public string AddPageTip
+            { get { return _addPageTip; } set { OnPropertyChanging(nameof(this.AddPageTip)); _addPageTip = value; OnPropertyChanged(nameof(this.AddPageTip)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string AddPreviousPage { get { return _addPreviousPage; } set { OnPropertyChanging(nameof(this.AddPreviousPage)); _addPreviousPage = value; OnPropertyChanged(nameof(this.AddPreviousPage)); } }
+            public string AddPreviousPage
+            { get { return _addPreviousPage; } set { OnPropertyChanging(nameof(this.AddPreviousPage)); _addPreviousPage = value; OnPropertyChanged(nameof(this.AddPreviousPage)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string AppInfoButtonTip { get { return _appInfoButtonTip; } set { OnPropertyChanging(nameof(this.AppInfoButtonTip)); _appInfoButtonTip = value; OnPropertyChanged(nameof(this.AppInfoButtonTip)); } }
+            public string AppInfoButtonTip
+            { get { return _appInfoButtonTip; } set { OnPropertyChanging(nameof(this.AppInfoButtonTip)); _appInfoButtonTip = value; OnPropertyChanged(nameof(this.AppInfoButtonTip)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string EmptyPageText { get { return _emptyPageText; } set { OnPropertyChanging(nameof(this.EmptyPageText)); _emptyPageText = value; OnPropertyChanged(nameof(this.EmptyPageText)); } }
+            public string EmptyPageDescription
+            { get { return _emptyPageDescription; } set { OnPropertyChanging(nameof(this.EmptyPageDescription)); _emptyPageDescription = value; OnPropertyChanged(nameof(this.EmptyPageDescription)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string ExitButtonTip { get { return _exitButtonTip; } set { OnPropertyChanging(nameof(this.ExitButtonTip)); _exitButtonTip = value; OnPropertyChanged(nameof(this.ExitButtonTip)); } }
+            public string ExitButtonTip
+            { get { return _exitButtonTip; } set { OnPropertyChanging(nameof(this.ExitButtonTip)); _exitButtonTip = value; OnPropertyChanged(nameof(this.ExitButtonTip)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string LocateButtonTip { get { return _locateButtonTip; } set { OnPropertyChanging(nameof(this.LocateButtonTip)); _locateButtonTip = value; OnPropertyChanged(nameof(this.LocateButtonTip)); } }
+            public string LocateButtonTip
+            { get { return _locateButtonTip; } set { OnPropertyChanging(nameof(this.LocateButtonTip)); _locateButtonTip = value; OnPropertyChanged(nameof(this.LocateButtonTip)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string MoveOutGroup { get { return _moveOutGroup; } set { OnPropertyChanging(nameof(this.MoveOutGroup)); _moveOutGroup = value; OnPropertyChanged(nameof(this.MoveOutGroup)); } }
+            public string MoveOutGroup
+            { get { return _moveOutGroup; } set { OnPropertyChanging(nameof(this.MoveOutGroup)); _moveOutGroup = value; OnPropertyChanged(nameof(this.MoveOutGroup)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string MoveToNextPage { get { return _moveToNextPage; } set { OnPropertyChanging(nameof(this.MoveToNextPage)); _moveToNextPage = value; OnPropertyChanged(nameof(this.MoveToNextPage)); } }
+            public string MoveToNextPage
+            { get { return _moveToNextPage; } set { OnPropertyChanging(nameof(this.MoveToNextPage)); _moveToNextPage = value; OnPropertyChanged(nameof(this.MoveToNextPage)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string MoveToPreviousPage { get { return _moveToPreviousPage; } set { OnPropertyChanging(nameof(this.MoveToPreviousPage)); _moveToPreviousPage = value; OnPropertyChanged(nameof(this.MoveToPreviousPage)); } }
+            public string MoveToPreviousPage
+            { get { return _moveToPreviousPage; } set { OnPropertyChanging(nameof(this.MoveToPreviousPage)); _moveToPreviousPage = value; OnPropertyChanged(nameof(this.MoveToPreviousPage)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string PinTip { get { return _pinTip; } set { OnPropertyChanging(nameof(this.PinTip)); _pinTip = value; OnPropertyChanged(nameof(this.PinTip)); } }
+            public string PinDescription
+            { get { return _pinDescription; } set { OnPropertyChanging(nameof(this.PinDescription)); _pinDescription = value; OnPropertyChanged(nameof(this.PinDescription)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string RemoveGroup { get { return _removeGroup; } set { OnPropertyChanging(nameof(this.RemoveGroup)); _removeGroup = value; OnPropertyChanged(nameof(this.RemoveGroup)); } }
+            public string PinTip
+            { get { return _pinTip; } set { OnPropertyChanging(nameof(this.PinTip)); _pinTip = value; OnPropertyChanged(nameof(this.PinTip)); } }
+
+            /// <summary>
+            ///
+            /// </summary>
+            public string RemoveGroup
+            { get { return _removeGroup; } set { OnPropertyChanging(nameof(this.RemoveGroup)); _removeGroup = value; OnPropertyChanged(nameof(this.RemoveGroup)); } }
+
+            /// <summary>
+            ///
+            /// </summary>
+            public string RemovePage
+            { get { return _removePage; } set { OnPropertyChanging(nameof(this.RemovePage)); _removePage = value; OnPropertyChanged(nameof(this.RemovePage)); } }
 
             #endregion Members
 
@@ -825,14 +865,16 @@ namespace Wireshelves.ViewModels
                     this.AddPageTip = __GetTranslationEntryInternal(section, "AddPageTip", _addPageTip_d, missing, ref loaded);
                     this.AddPreviousPage = __GetTranslationEntryInternal(section, "AddPreviousPage", _addPreviousPage_d, missing, ref loaded);
                     this.AppInfoButtonTip = __GetTranslationEntryInternal(section, "AppInfoButtonTip", _appInfoButtonTip_d, missing, ref loaded);
-                    this.EmptyPageText = __GetTranslationEntryInternal(section, "EmptyPageText", _emptyPageText_d, missing, ref loaded);
+                    this.EmptyPageDescription = __GetTranslationEntryInternal(section, "EmptyPageDescription", _emptyPageDescription_d, missing, ref loaded);
                     this.ExitButtonTip = __GetTranslationEntryInternal(section, "ExitButtonTip", _exitButtonTip_d, missing, ref loaded);
                     this.LocateButtonTip = __GetTranslationEntryInternal(section, "LocateButtonTip", _locateButtonTip_d, missing, ref loaded);
                     this.MoveOutGroup = __GetTranslationEntryInternal(section, "MoveOutGroup", _moveOutGroup_d, missing, ref loaded);
                     this.MoveToNextPage = __GetTranslationEntryInternal(section, "MoveToNextPage", _moveToNextPage_d, missing, ref loaded);
                     this.MoveToPreviousPage = __GetTranslationEntryInternal(section, "MoveToPreviousPage", _moveToPreviousPage_d, missing, ref loaded);
+                    this.PinDescription = __GetTranslationEntryInternal(section, "PinDescription", _pinDescription_d, missing, ref loaded);
                     this.PinTip = __GetTranslationEntryInternal(section, "PinTip", _pinTip_d, missing, ref loaded);
                     this.RemoveGroup = __GetTranslationEntryInternal(section, "RemoveGroup", _removeGroup_d, missing, ref loaded);
+                    this.RemovePage = __GetTranslationEntryInternal(section, "RemovePage", _removePage_d, missing, ref loaded);
                     return loaded;
                 }
                 else
@@ -841,14 +883,16 @@ namespace Wireshelves.ViewModels
                     missing.Add("AddPageTip");
                     missing.Add("AddPreviousPage");
                     missing.Add("AppInfoButtonTip");
-                    missing.Add("EmptyPageText");
+                    missing.Add("EmptyPageDescription");
                     missing.Add("ExitButtonTip");
                     missing.Add("LocateButtonTip");
                     missing.Add("MoveOutGroup");
                     missing.Add("MoveToNextPage");
                     missing.Add("MoveToPreviousPage");
+                    missing.Add("PinDescription");
                     missing.Add("PinTip");
                     missing.Add("RemoveGroup");
+                    missing.Add("RemovePage");
                     return 0;
                 }
             }
@@ -859,14 +903,16 @@ namespace Wireshelves.ViewModels
                 this.AddPageTip = _addPageTip_d;
                 this.AddPreviousPage = _addPreviousPage_d;
                 this.AppInfoButtonTip = _appInfoButtonTip_d;
-                this.EmptyPageText = _emptyPageText_d;
+                this.EmptyPageDescription = _emptyPageDescription_d;
                 this.ExitButtonTip = _exitButtonTip_d;
                 this.LocateButtonTip = _locateButtonTip_d;
                 this.MoveOutGroup = _moveOutGroup_d;
                 this.MoveToNextPage = _moveToNextPage_d;
                 this.MoveToPreviousPage = _moveToPreviousPage_d;
+                this.PinDescription = _pinDescription_d;
                 this.PinTip = _pinTip_d;
                 this.RemoveGroup = _removeGroup_d;
+                this.RemovePage = _removePage_d;
             }
 
             private void __SaveInternal(bool defaultField, XConfigManager manager)
@@ -878,14 +924,16 @@ namespace Wireshelves.ViewModels
                     section.Properties.AddString("AddPageTip", _addPageTip_d).Comment.SetValue(_addPageTip_c, true);
                     section.Properties.AddString("AddPreviousPage", _addPreviousPage_d).Comment.SetValue(_addPreviousPage_c, true);
                     section.Properties.AddString("AppInfoButtonTip", _appInfoButtonTip_d).Comment.SetValue(_appInfoButtonTip_c, true);
-                    section.Properties.AddString("EmptyPageText", _emptyPageText_d).Comment.SetValue(_emptyPageText_c, true);
+                    section.Properties.AddString("EmptyPageDescription", _emptyPageDescription_d).Comment.SetValue(_emptyPageDescription_c, true);
                     section.Properties.AddString("ExitButtonTip", _exitButtonTip_d).Comment.SetValue(_exitButtonTip_c, true);
                     section.Properties.AddString("LocateButtonTip", _locateButtonTip_d).Comment.SetValue(_locateButtonTip_c, true);
                     section.Properties.AddString("MoveOutGroup", _moveOutGroup_d).Comment.SetValue(_moveOutGroup_c, true);
                     section.Properties.AddString("MoveToNextPage", _moveToNextPage_d).Comment.SetValue(_moveToNextPage_c, true);
                     section.Properties.AddString("MoveToPreviousPage", _moveToPreviousPage_d).Comment.SetValue(_moveToPreviousPage_c, true);
+                    section.Properties.AddString("PinDescription", _pinDescription_d).Comment.SetValue(_pinDescription_c, true);
                     section.Properties.AddString("PinTip", _pinTip_d).Comment.SetValue(_pinTip_c, true);
                     section.Properties.AddString("RemoveGroup", _removeGroup_d).Comment.SetValue(_removeGroup_c, true);
+                    section.Properties.AddString("RemovePage", _removePage_d).Comment.SetValue(_removePage_c, true);
                 }
                 else
                 {
@@ -893,17 +941,18 @@ namespace Wireshelves.ViewModels
                     section.Properties.AddString("AddPageTip", this.AddPageTip).Comment.SetValue(_addPageTip_c, true);
                     section.Properties.AddString("AddPreviousPage", this.AddPreviousPage).Comment.SetValue(_addPreviousPage_c, true);
                     section.Properties.AddString("AppInfoButtonTip", this.AppInfoButtonTip).Comment.SetValue(_appInfoButtonTip_c, true);
-                    section.Properties.AddString("EmptyPageText", this.EmptyPageText).Comment.SetValue(_emptyPageText_c, true);
+                    section.Properties.AddString("EmptyPageDescription", this.EmptyPageDescription).Comment.SetValue(_emptyPageDescription_c, true);
                     section.Properties.AddString("ExitButtonTip", this.ExitButtonTip).Comment.SetValue(_exitButtonTip_c, true);
                     section.Properties.AddString("LocateButtonTip", this.LocateButtonTip).Comment.SetValue(_locateButtonTip_c, true);
                     section.Properties.AddString("MoveOutGroup", this.MoveOutGroup).Comment.SetValue(_moveOutGroup_c, true);
                     section.Properties.AddString("MoveToNextPage", this.MoveToNextPage).Comment.SetValue(_moveToNextPage_c, true);
                     section.Properties.AddString("MoveToPreviousPage", this.MoveToPreviousPage).Comment.SetValue(_moveToPreviousPage_c, true);
+                    section.Properties.AddString("PinDescription", this.PinDescription).Comment.SetValue(_pinDescription_c, true);
                     section.Properties.AddString("PinTip", this.PinTip).Comment.SetValue(_pinTip_c, true);
                     section.Properties.AddString("RemoveGroup", this.RemoveGroup).Comment.SetValue(_removeGroup_c, true);
+                    section.Properties.AddString("RemovePage", this.RemovePage).Comment.SetValue(_removePage_c, true);
                 }
             }
-
         }
 
         #endregion Main
@@ -965,17 +1014,20 @@ namespace Wireshelves.ViewModels
             /// <summary>
             /// Settings title.
             /// </summary>
-            public string Settings { get { return _settings; } set { OnPropertyChanging(nameof(this.Settings)); _settings = value; OnPropertyChanged(nameof(this.Settings)); } }
+            public string Settings
+            { get { return _settings; } set { OnPropertyChanging(nameof(this.Settings)); _settings = value; OnPropertyChanged(nameof(this.Settings)); } }
 
             /// <summary>
             /// Settings title shelf size.
             /// </summary>
-            public string ShelfSize { get { return _shelfSize; } set { OnPropertyChanging(nameof(this.ShelfSize)); _shelfSize = value; OnPropertyChanged(nameof(this.ShelfSize)); } }
+            public string ShelfSize
+            { get { return _shelfSize; } set { OnPropertyChanging(nameof(this.ShelfSize)); _shelfSize = value; OnPropertyChanged(nameof(this.ShelfSize)); } }
 
             /// <summary>
             /// Settings title theme style.
             /// </summary>
-            public string ThemeStyle { get { return _themeStyle; } set { OnPropertyChanging(nameof(this.ThemeStyle)); _themeStyle = value; OnPropertyChanged(nameof(this.ThemeStyle)); } }
+            public string ThemeStyle
+            { get { return _themeStyle; } set { OnPropertyChanging(nameof(this.ThemeStyle)); _themeStyle = value; OnPropertyChanged(nameof(this.ThemeStyle)); } }
 
             #endregion Members
 
@@ -1054,7 +1106,6 @@ namespace Wireshelves.ViewModels
                     section.Properties.AddString("ThemeStyle", this.ThemeStyle).Comment.SetValue(_themeStyle_c, true);
                 }
             }
-
         }
 
         #endregion Settings
@@ -1126,39 +1177,46 @@ namespace Wireshelves.ViewModels
             private string _runAsAdministrator = _runAsAdministrator_d;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string AllowsRemove { get { return _allowsRemove; } set { OnPropertyChanging(nameof(this.AllowsRemove)); _allowsRemove = value; OnPropertyChanged(nameof(this.AllowsRemove)); } }
+            public string AllowsRemove
+            { get { return _allowsRemove; } set { OnPropertyChanging(nameof(this.AllowsRemove)); _allowsRemove = value; OnPropertyChanged(nameof(this.AllowsRemove)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string Arguments { get { return _arguments; } set { OnPropertyChanging(nameof(this.Arguments)); _arguments = value; OnPropertyChanged(nameof(this.Arguments)); } }
+            public string Arguments
+            { get { return _arguments; } set { OnPropertyChanging(nameof(this.Arguments)); _arguments = value; OnPropertyChanged(nameof(this.Arguments)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string DefaultRunAsAdministrator { get { return _defaultRunAsAdministrator; } set { OnPropertyChanging(nameof(this.DefaultRunAsAdministrator)); _defaultRunAsAdministrator = value; OnPropertyChanged(nameof(this.DefaultRunAsAdministrator)); } }
+            public string DefaultRunAsAdministrator
+            { get { return _defaultRunAsAdministrator; } set { OnPropertyChanging(nameof(this.DefaultRunAsAdministrator)); _defaultRunAsAdministrator = value; OnPropertyChanged(nameof(this.DefaultRunAsAdministrator)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string OpenFileLocation { get { return _openFileLocation; } set { OnPropertyChanging(nameof(this.OpenFileLocation)); _openFileLocation = value; OnPropertyChanged(nameof(this.OpenFileLocation)); } }
+            public string OpenFileLocation
+            { get { return _openFileLocation; } set { OnPropertyChanging(nameof(this.OpenFileLocation)); _openFileLocation = value; OnPropertyChanged(nameof(this.OpenFileLocation)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string Remove { get { return _remove; } set { OnPropertyChanging(nameof(this.Remove)); _remove = value; OnPropertyChanged(nameof(this.Remove)); } }
+            public string Remove
+            { get { return _remove; } set { OnPropertyChanging(nameof(this.Remove)); _remove = value; OnPropertyChanged(nameof(this.Remove)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string Run { get { return _run; } set { OnPropertyChanging(nameof(this.Run)); _run = value; OnPropertyChanged(nameof(this.Run)); } }
+            public string Run
+            { get { return _run; } set { OnPropertyChanging(nameof(this.Run)); _run = value; OnPropertyChanged(nameof(this.Run)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string RunAsAdministrator { get { return _runAsAdministrator; } set { OnPropertyChanging(nameof(this.RunAsAdministrator)); _runAsAdministrator = value; OnPropertyChanged(nameof(this.RunAsAdministrator)); } }
+            public string RunAsAdministrator
+            { get { return _runAsAdministrator; } set { OnPropertyChanging(nameof(this.RunAsAdministrator)); _runAsAdministrator = value; OnPropertyChanged(nameof(this.RunAsAdministrator)); } }
 
             #endregion Members
 
@@ -1257,7 +1315,6 @@ namespace Wireshelves.ViewModels
                     section.Properties.AddString("RunAsAdministrator", this.RunAsAdministrator).Comment.SetValue(_runAsAdministrator_c, true);
                 }
             }
-
         }
 
         #endregion AppItem
@@ -1326,34 +1383,40 @@ namespace Wireshelves.ViewModels
             private string _unknownItem = _unknownItem_d;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string AppItemNotExists { get { return _appItemNotExists; } set { OnPropertyChanging(nameof(this.AppItemNotExists)); _appItemNotExists = value; OnPropertyChanged(nameof(this.AppItemNotExists)); } }
+            public string AppItemNotExists
+            { get { return _appItemNotExists; } set { OnPropertyChanging(nameof(this.AppItemNotExists)); _appItemNotExists = value; OnPropertyChanged(nameof(this.AppItemNotExists)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string FolderNotExists { get { return _folderNotExists; } set { OnPropertyChanging(nameof(this.FolderNotExists)); _folderNotExists = value; OnPropertyChanged(nameof(this.FolderNotExists)); } }
+            public string FolderNotExists
+            { get { return _folderNotExists; } set { OnPropertyChanging(nameof(this.FolderNotExists)); _folderNotExists = value; OnPropertyChanged(nameof(this.FolderNotExists)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string RemoveGroupConfirm { get { return _removeGroupConfirm; } set { OnPropertyChanging(nameof(this.RemoveGroupConfirm)); _removeGroupConfirm = value; OnPropertyChanged(nameof(this.RemoveGroupConfirm)); } }
+            public string RemoveGroupConfirm
+            { get { return _removeGroupConfirm; } set { OnPropertyChanging(nameof(this.RemoveGroupConfirm)); _removeGroupConfirm = value; OnPropertyChanged(nameof(this.RemoveGroupConfirm)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string RemoveItemConfirm { get { return _removeItemConfirm; } set { OnPropertyChanging(nameof(this.RemoveItemConfirm)); _removeItemConfirm = value; OnPropertyChanged(nameof(this.RemoveItemConfirm)); } }
+            public string RemoveItemConfirm
+            { get { return _removeItemConfirm; } set { OnPropertyChanging(nameof(this.RemoveItemConfirm)); _removeItemConfirm = value; OnPropertyChanged(nameof(this.RemoveItemConfirm)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string TooManyItems { get { return _tooManyItems; } set { OnPropertyChanging(nameof(this.TooManyItems)); _tooManyItems = value; OnPropertyChanged(nameof(this.TooManyItems)); } }
+            public string TooManyItems
+            { get { return _tooManyItems; } set { OnPropertyChanging(nameof(this.TooManyItems)); _tooManyItems = value; OnPropertyChanged(nameof(this.TooManyItems)); } }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public string UnknownItem { get { return _unknownItem; } set { OnPropertyChanging(nameof(this.UnknownItem)); _unknownItem = value; OnPropertyChanged(nameof(this.UnknownItem)); } }
+            public string UnknownItem
+            { get { return _unknownItem; } set { OnPropertyChanging(nameof(this.UnknownItem)); _unknownItem = value; OnPropertyChanged(nameof(this.UnknownItem)); } }
 
             #endregion Members
 
@@ -1447,10 +1510,8 @@ namespace Wireshelves.ViewModels
                     section.Properties.AddString("UnknownItem", this.UnknownItem).Comment.SetValue(_unknownItem_c, true);
                 }
             }
-
         }
 
         #endregion Messages
-
     }
 }

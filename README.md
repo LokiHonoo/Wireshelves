@@ -7,7 +7,7 @@
 
 ## INTRODUCTION
 
-Lightweight software launcher. dragging, grouping supported.
+Lightweight software launcher. dragging, grouping, multi-language supported.
 
 ## SCREENSHOTS
 

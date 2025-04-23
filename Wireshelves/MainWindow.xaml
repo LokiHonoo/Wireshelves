@@ -186,19 +186,6 @@
                     Height="30"
                     VerticalAlignment="Bottom"
                     AllowDrop="True" />
-                <!--  空白提示  -->
-                <StackPanel
-                    Margin="0,5,80,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Visibility="{Binding CurrentAppItemPage.AppItemGroups.Count, Converter={x:Static hui:NumEqualParamToVisibilityVisibleConverter.Instance}, ConverterParameter=0}">
-                    <Path
-                        Margin="0,0,0,10"
-                        HorizontalAlignment="Right"
-                        Data="{StaticResource ArrowUpGeometry}"
-                        Style="{StaticResource PathIcon16Style}" />
-                    <TextBlock Text="{Binding Main.EmptyPageText, Source={x:Static vm:LanguagePackage.Instance}}" />
-                </StackPanel>
                 <!--  页标识  -->
                 <ListBox
                     MaxHeight="400"
@@ -248,7 +235,7 @@
                 <!--  程序托盘  -->
                 <ListBox
                     Margin="35,35,35,35"
-                    d:ItemsSource="{d:SampleData ItemCount=25}"
+                    d:ItemsSource="{d:SampleData ItemCount=0}"
                     Background="Transparent"
                     BorderThickness="0"
                     ItemsSource="{Binding CurrentAppItemPage.AppItemGroups}">
@@ -318,6 +305,42 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                <!--  空白页  -->
+                <Grid Visibility="{Binding CurrentAppItemPage.AppItemGroups.Count, Converter={x:Static hui:NumEqualParamToVisibilityVisibleConverter.Instance}, ConverterParameter=0}">
+                    <StackPanel
+                        Margin="0,5,80,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        d:Visibility="Visible">
+                        <Path
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Right"
+                            Data="{StaticResource ArrowUpGeometry}"
+                            Fill="{DynamicResource SecondaryForegroundBrush}"
+                            Style="{StaticResource PathIcon16Style}" />
+                        <TextBlock Foreground="{DynamicResource SecondaryForegroundBrush}" Text="{Binding Main.PinDescription, Source={x:Static vm:LanguagePackage.Instance}}" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button
+                            Padding="9,7"
+                            HorizontalAlignment="Center"
+                            Command="{Binding RemovePageCommand}"
+                            Foreground="{DynamicResource SecondaryForegroundBrush}">
+                            <StackPanel Orientation="Horizontal">
+                                <Path
+                                    HorizontalAlignment="Right"
+                                    Data="{StaticResource DeleteGeometry}"
+                                    Fill="{DynamicResource SecondaryForegroundBrush}"
+                                    Style="{StaticResource PathIcon16Style}" />
+                                <TextBlock Margin="10,0,0,0" Text="{Binding Main.RemovePage, Source={x:Static vm:LanguagePackage.Instance}}" />
+                            </StackPanel>
+                        </Button>
+                        <TextBlock
+                            Margin="20"
+                            Foreground="{DynamicResource SecondaryForegroundBrush}"
+                            Text="{Binding Main.EmptyPageDescription, Source={x:Static vm:LanguagePackage.Instance}}" />
+                    </StackPanel>
+                </Grid>
                 <!--  组右键菜单  -->
                 <Grid d:Visibility="Collapsed" Visibility="{Binding CurrentAppItemGroup, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
                     <Button
@@ -431,7 +454,7 @@
                     </hui:DropShadowDecorator>
                 </Grid>
                 <!--  文件右键菜单  -->
-                <Grid d:Visibility="Visible" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
+                <Grid d:Visibility="Collapsed" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
                     <Button
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding CloseItemMenuCommand}"
