@@ -235,7 +235,7 @@
                 <!--  程序托盘  -->
                 <ListBox
                     Margin="35,35,35,35"
-                    d:ItemsSource="{d:SampleData ItemCount=0}"
+                    d:ItemsSource="{d:SampleData ItemCount=25}"
                     Background="Transparent"
                     BorderThickness="0"
                     ItemsSource="{Binding CurrentAppItemPage.AppItemGroups}">
@@ -275,6 +275,9 @@
                                         <b:ChangePropertyAction PropertyName="Background" Value="{DynamicResource Alpha0CBrush}" />
                                         <b:InvokeCommandAction Command="{Binding AppItemGroupDragEnterCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
                                     </b:EventTrigger>
+                                    <b:EventTrigger EventName="DragOver">
+                                        <b:InvokeCommandAction Command="{Binding AppItemGroupDragOverCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
+                                    </b:EventTrigger>
                                     <b:EventTrigger EventName="DragLeave">
                                         <b:ChangePropertyAction PropertyName="Background" Value="Transparent" />
                                         <b:InvokeCommandAction Command="{Binding AppItemGroupDragLeaveCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
@@ -306,7 +309,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <!--  空白页  -->
-                <Grid Visibility="{Binding CurrentAppItemPage.AppItemGroups.Count, Converter={x:Static hui:NumEqualParamToVisibilityVisibleConverter.Instance}, ConverterParameter=0}">
+                <Grid d:Visibility="Collapsed" Visibility="{Binding CurrentAppItemPage.AppItemGroups.Count, Converter={x:Static hui:NumEqualParamToVisibilityVisibleConverter.Instance}, ConverterParameter=0}">
                     <StackPanel
                         Margin="0,5,80,0"
                         HorizontalAlignment="Right"
@@ -454,7 +457,7 @@
                     </hui:DropShadowDecorator>
                 </Grid>
                 <!--  文件右键菜单  -->
-                <Grid d:Visibility="Visible" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
+                <Grid d:Visibility="Collapsed" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
                     <Button
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding CloseItemMenuCommand}"

@@ -55,7 +55,7 @@ namespace Wireshelves.ViewModels
 
         private int _shelfCol;
         private int _shelfRow;
-        private FrameworkElement? _targetElement = null;
+        private object? _dragTarget= null;
         private int _wheelTimestamp;
 
         public ICommand AddPageCommand { get; }
@@ -290,7 +290,7 @@ namespace Wireshelves.ViewModels
                     }
                 }
                 target.Background = new SolidColorBrush(Colors.Transparent);
-                _targetElement = null;
+                _dragTarget = null;
                 e.Handled = true;
             }
         }
@@ -334,16 +334,16 @@ namespace Wireshelves.ViewModels
                 if (e.Data.GetDataPresent(typeof(AppItemGroup)))
                 {
                     var droppedGroup = (AppItemGroup)e.Data.GetData(typeof(AppItemGroup));
-                    var target = (FrameworkElement)e.Source;
                     if (droppedGroup.AppItems.Count == 1)
                     {
-                        _targetElement = (FrameworkElement)e.Source;
+                        _dragTarget = (FrameworkElement)e.Source;
                         Task.Run(() =>
                         {
                             Thread.Sleep(2000);
                             Application.Current.Dispatcher.Invoke(() =>
                             {
-                                if ((FrameworkElement)e.Source == _targetElement)
+                                var target = (FrameworkElement)e.Source;
+                                if (target == _targetElement)
                                 {
                                     this.CurrentAppItemGroup = (AppItemGroup)target.DataContext;
                                 }
@@ -359,7 +359,7 @@ namespace Wireshelves.ViewModels
         {
             if (e != null)
             {
-                _targetElement = null;
+                _dragTarget = null;
             }
         }
 
