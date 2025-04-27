@@ -7,7 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/HonooUI.WPF;component/Themes/DarkDesign.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/HonooUI.WPF;component/Themes/Design.xaml" />
                 <hui:Theme ThemeStyle="Dark" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

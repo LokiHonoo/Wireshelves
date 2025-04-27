@@ -1,4 +1,4 @@
-﻿<hui:Window
+﻿<hui:ChromeWindow
     x:Class="Wireshelves.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,31 +10,30 @@
     xmlns:vm="clr-namespace:Wireshelves.ViewModels"
     x:Name="Window"
     Title="Wireshelves"
-    Background="{DynamicResource SecondaryBackgroundBrush}"
-    CaptionBackground="{DynamicResource SecondaryBackgroundBrush}"
+    Background="{DynamicResource PrimaryBackgroundBrush}"
     DataContext="{x:Static vm:MainWindowViewModel.Instance}"
     FontSize="{DynamicResource PrimaryFontSize}"
     Foreground="{DynamicResource PrimaryForegroundBrush}"
     Left="{Binding WindowLeft, Source={x:Static vm:Settings.Instance}, Mode=TwoWay}"
-    ResizeMode="CanMinimize"
     SizeToContent="WidthAndHeight"
     SystemButtons="Close"
     Top="{Binding WindowTop, Source={x:Static vm:Settings.Instance}, Mode=TwoWay}"
     mc:Ignorable="d">
-    <hui:Window.Resources>
+    <hui:ChromeWindow.Resources>
         <local:ThemeStyleToCutomConverter
             x:Key="ThemeStyleToTitleBgConverter"
             DarkValue="/Resources/TitleBg_200x32_D.png"
-            OtherValue="/Resources/TitleBg_200x32_L.png" />
+            LightValue="/Resources/TitleBg_200x32_L.png" />
         <Style
-            x:Key="LabelHeaderStyle"
+            x:Key="HeaderLabelStyle"
             BasedOn="{StaticResource {x:Type Label}}"
             TargetType="{x:Type Label}">
             <Setter Property="Margin" Value="9,0,0,0" />
             <Setter Property="Padding" Value="7,2" />
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundBrush}" />
-            <Setter Property="Background" Value="{DynamicResource ThirdlyBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThirdlyForegroundBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundBrush}" />
         </Style>
+        <!--  多项组右键菜单  -->
         <ContextMenu x:Key="AppGroupContextMenu">
             <MenuItem
                 HorizontalContentAlignment="Left"
@@ -71,7 +70,7 @@
                 </MenuItem.Icon>
             </MenuItem>
         </ContextMenu>
-    </hui:Window.Resources>
+    </hui:ChromeWindow.Resources>
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction Command="{Binding WindowLoadedCommand}" PassEventArgsToCommand="True" />
@@ -83,272 +82,209 @@
             <b:InvokeCommandAction Command="{Binding WindowDeactivatedCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
         </b:EventTrigger>
     </b:Interaction.Triggers>
-    <hui:Window.CaptionBar>
-        <Grid Background="{DynamicResource SecondaryBackgroundBrush}">
-            <Image
-                Margin="50,0,10,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Source="{Binding ThemeStyle, Source={x:Static vm:Settings.Instance}, Converter={StaticResource ThemeStyleToTitleBgConverter}}"
-                Stretch="Uniform" />
-            <Grid Margin="24,0,0,0" DockPanel.Dock="Left">
-                <TextBlock
-                    Margin="40,0,0,0"
-                    VerticalAlignment="Center"
-                    FontSize="12"
-                    Foreground="{DynamicResource ThirdlyForegroundBrush}"
-                    Text="Lightweight software launcher" />
-                <TextBlock
-                    Margin="0,-18,0,0"
-                    VerticalAlignment="Center"
-                    FontSize="16"
-                    FontWeight="Bold"
-                    Foreground="#FF3464DC"
-                    Text="Wireshelves" />
-            </Grid>
-            <!--  TOP 按钮  -->
-            <StackPanel
-                Margin="0,0,20,0"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal"
+    <hui:ChromeWindow.SystemBar>
+        <StackPanel Orientation="Horizontal">
+            <hui:MenuButton
+                Width="45"
+                DropIconVisibility="Collapsed"
+                Style="{DynamicResource MenuButtonSystemBarStyle}"
+                ToolTip="{Binding Main.AddPageTip, Source={x:Static vm:LanguagePackage.Instance}}"
                 WindowChrome.IsHitTestVisibleInChrome="True">
-                <hui:MenuButton
-                    Width="45"
-                    ArrowVisibility="Collapsed"
-                    Header="{StaticResource PlusGeometry}"
-                    HeaderTemplate="{StaticResource GeometryToPathIcon16DataTemplate}"
-                    Style="{DynamicResource HuiMenuButtonSystemStyle}">
-                    <MenuItem
-                        Command="{Binding AddPageCommand}"
-                        CommandParameter="Previous"
-                        Header="{Binding Main.AddPreviousPage, Source={x:Static vm:LanguagePackage.Instance}}">
-                        <MenuItem.Icon>
-                            <Path
-                                Data="{StaticResource SquareHalfTopFillGeometry}"
-                                Fill="{DynamicResource PrimaryForegroundBrush}"
-                                Style="{StaticResource PathIcon16Style}" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem
-                        Command="{Binding AddPageCommand}"
-                        CommandParameter="Next"
-                        Header="{Binding Main.AddNextPage, Source={x:Static vm:LanguagePackage.Instance}}">
-                        <MenuItem.Icon>
-                            <Path
-                                Data="{StaticResource SquareHalfBottomFillGeometry}"
-                                Fill="{DynamicResource PrimaryForegroundBrush}"
-                                Style="{StaticResource PathIcon16Style}" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </hui:MenuButton>
-                <hui:ToggleButton
-                    CheckedBackground="{DynamicResource Alpha20Brush}"
-                    IsChecked="{Binding Pinned, Source={x:Static vm:Settings.Instance}, Mode=TwoWay}"
-                    Style="{DynamicResource HuiToggleButtonSystemStyle}"
-                    ToolTip="{Binding Main.PinTip, Source={x:Static vm:LanguagePackage.Instance}}"
-                    ToolTipService.Placement="Bottom">
-                    <hui:CheckStateControl
-                        CheckedContent="{StaticResource PinFillGeometry}"
-                        CheckedContentTemplate="{StaticResource GeometryToPathIcon16DataTemplate}"
-                        CheckedForeground="#FFF19102"
-                        IsChecked="{Binding IsChecked, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ToggleButton}}}"
-                        UncheckedContent="{StaticResource PinGeometry}"
-                        UncheckedContentTemplate="{StaticResource GeometryToPathIcon16DataTemplate}" />
-                </hui:ToggleButton>
-            </StackPanel>
-        </Grid>
-    </hui:Window.CaptionBar>
+                <hui:MenuButton.Header>
+                    <Path Data="{StaticResource PlusGeometry}" Style="{StaticResource PathIcon12FillParentForegroundStyle}" />
+                </hui:MenuButton.Header>
+                <MenuItem
+                    Command="{Binding AddPageCommand}"
+                    CommandParameter="Previous"
+                    Header="{Binding Main.AddPreviousPage, Source={x:Static vm:LanguagePackage.Instance}}">
+                    <MenuItem.Icon>
+                        <Path
+                            Data="{StaticResource SquareHalfTopFillGeometry}"
+                            Fill="{DynamicResource PrimaryForegroundBrush}"
+                            Style="{StaticResource PathIcon14Style}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem
+                    Command="{Binding AddPageCommand}"
+                    CommandParameter="Next"
+                    Header="{Binding Main.AddNextPage, Source={x:Static vm:LanguagePackage.Instance}}">
+                    <MenuItem.Icon>
+                        <Path
+                            Data="{StaticResource SquareHalfBottomFillGeometry}"
+                            Fill="{DynamicResource PrimaryForegroundBrush}"
+                            Style="{StaticResource PathIcon14Style}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </hui:MenuButton>
+            <ToggleButton
+                hui:ToggleButtonAttached.CheckedBackground="{DynamicResource ContainerHardOpacityBackgroundBrush}"
+                IsChecked="{Binding Pinned, Source={x:Static vm:Settings.Instance}, Mode=TwoWay}"
+                Style="{DynamicResource ToggleButtonSystemBarStyle}"
+                ToolTip="{Binding Main.PinTip, Source={x:Static vm:LanguagePackage.Instance}}"
+                ToolTipService.Placement="Bottom"
+                WindowChrome.IsHitTestVisibleInChrome="True">
+                <hui:CheckStateControl
+                    CheckedContent="{StaticResource PinFillGeometry}"
+                    CheckedContentTemplate="{StaticResource PathIcon12FillParentForegroundGeometryDataTemplate}"
+                    CheckedForeground="#FFF19102"
+                    UncheckedContent="{StaticResource PinGeometry}"
+                    UncheckedContentTemplate="{StaticResource PathIcon12FillParentForegroundGeometryDataTemplate}" />
+            </ToggleButton>
+        </StackPanel>
+    </hui:ChromeWindow.SystemBar>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <!--  标题栏  -->
             <Grid
                 Grid.Row="0"
-                AllowDrop="True"
-                Background="Transparent">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Drop">
-                        <b:InvokeCommandAction Command="{Binding AppitemPagePadDropCommand}" PassEventArgsToCommand="True" />
-                    </b:EventTrigger>
-                    <b:EventTrigger EventName="PreviewMouseWheel">
-                        <b:InvokeCommandAction Command="{Binding MouseWheelCommand}" PassEventArgsToCommand="True" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                <!--  上区域  -->
-                <Grid
-                    Height="30"
-                    VerticalAlignment="Top"
-                    AllowDrop="True" />
-                <!--  下区域  -->
-                <Grid
-                    Height="30"
-                    VerticalAlignment="Bottom"
-                    AllowDrop="True" />
-                <!--  页标识  -->
-                <ListBox
-                    MaxHeight="400"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                    d:Visibility="Visible"
+                Height="32"
+                Background="{DynamicResource ContainerHardOpacityBackgroundBrush}">
+                <Image
+                    Margin="50,0,10,0"
+                    HorizontalAlignment="Left"
+                    Source="{Binding ThemeStyle, Source={x:Static vm:Settings.Instance}, Converter={StaticResource ThemeStyleToTitleBgConverter}}"
+                    Stretch="Uniform" />
+                <Grid Margin="24,0,0,0">
+                    <TextBlock
+                        Margin="40,16,0,0"
+                        VerticalAlignment="Top"
+                        FontSize="12"
+                        Foreground="{DynamicResource ThirdlyForegroundBrush}"
+                        Text="Lightweight software launcher" />
+                    <TextBlock
+                        Margin="0,1,0,0"
+                        VerticalAlignment="Top"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="#FF3464DC"
+                        Text="Wireshelves" />
+                </Grid>
+            </Grid>
+            <!--  中心区域  -->
+            <Grid Grid.Row="1" Background="{DynamicResource ContainerHardOpacityBackgroundBrush}">
+                <!--  APP 列表  -->
+                <hui:Carousel
+                    d:Height="535"
+                    d:ItemsSource="{d:SampleData ItemCount=3}"
+                    d:Width="535"
                     Background="Transparent"
-                    BorderThickness="0"
+                    IsClickTurn="False"
+                    IsTabStripFloated="True"
+                    IsTimeTurn="False"
                     ItemsSource="{Binding AppItemPages}"
                     SelectedItem="{Binding CurrentAppItemPage, Mode=TwoWay}"
-                    Visibility="{Binding AppItemPages.Count, Converter={x:Static hui:NumEqualParamToVisibilityCollapsedConverter.Instance}, ConverterParameter=1}">
-                    <ListBox.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="Margin" Value="0,5,17,5" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="hui:DoubleValueAttached.Item1" Value="4" />
-                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundBrush}" />
-                                    <Setter Property="hui:DoubleValueAttached.Item1" Value="6" />
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="hui:DoubleValueAttached.Item1" Value="6" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
+                    TabStripMinSize="42"
+                    TabStripPlacement="Right">
+                    <hui:Carousel.ContentTemplate>
                         <DataTemplate DataType="{x:Type vm:AppItemPage}">
-                            <Grid Width="6" Height="6">
-                                <Path
-                                    Width="{Binding (hui:DoubleValueAttached.Item1), Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
-                                    Height="{Binding (hui:DoubleValueAttached.Item1), Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"
-                                    d:Height="4"
-                                    d:Width="4"
-                                    Data="{StaticResource CircleFillGeometry}"
-                                    Fill="{DynamicResource ThirdlyForegroundBrush}"
-                                    Style="{StaticResource PathIconStyle}" />
+                            <Grid>
+                                <!--  空白页  -->
+                                <Grid d:Visibility="Collapsed" Visibility="{Binding AppItemGroups.Count, Converter={x:Static hui:NumEqualParamToVisibilityVisibleConverter.Instance}, ConverterParameter=0}">
+                                    <StackPanel
+                                        Margin="0,5,65,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        d:Visibility="Visible">
+                                        <Path
+                                            Margin="0,0,0,10"
+                                            HorizontalAlignment="Right"
+                                            Data="{StaticResource ArrowUpGeometry}"
+                                            Fill="{DynamicResource SecondaryForegroundBrush}"
+                                            Style="{StaticResource PathIcon16Style}" />
+                                        <TextBlock Foreground="{DynamicResource SecondaryForegroundBrush}" Text="{Binding Main.PinDescription, Source={x:Static vm:LanguagePackage.Instance}}" />
+                                    </StackPanel>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Button
+                                            Padding="9,7"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding RemovePageCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
+                                            Foreground="{DynamicResource SecondaryForegroundBrush}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Path
+                                                    HorizontalAlignment="Right"
+                                                    Data="{StaticResource DeleteGeometry}"
+                                                    Fill="{DynamicResource SecondaryForegroundBrush}"
+                                                    Style="{StaticResource PathIcon16Style}" />
+                                                <TextBlock Margin="10,0,0,0" Text="{Binding Main.RemovePage, Source={x:Static vm:LanguagePackage.Instance}}" />
+                                            </StackPanel>
+                                        </Button>
+                                        <TextBlock
+                                            Margin="20"
+                                            Foreground="{DynamicResource SecondaryForegroundBrush}"
+                                            Text="{Binding Main.EmptyPageDescription, Source={x:Static vm:LanguagePackage.Instance}}" />
+                                    </StackPanel>
+                                </Grid>
+                                <!--  APP  -->
+                                <ItemsControl
+                                    Margin="30"
+                                    d:ItemsSource="{d:SampleData ItemCount=25}"
+                                    ItemsSource="{Binding AppItemGroups}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel
+                                                Width="{Binding ShelfCol, Source={x:Static vm:Settings.Instance}, Converter={x:Static hui:NumMulParamToDoubleConverter.Instance}, ConverterParameter=95}"
+                                                Height="{Binding ShelfRow, Source={x:Static vm:Settings.Instance}, Converter={x:Static hui:NumMulParamToDoubleConverter.Instance}, ConverterParameter=95}"
+                                                Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type vm:AppItemGroup}">
+                                            <hui:DraggableHaft
+                                                Width="95"
+                                                Height="95"
+                                                Padding="0"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Command="{Binding AppItemGroupCompoundCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
+                                                CornerRadius="0"
+                                                DragData="{Binding}"
+                                                HoveringStartDuration="00:00:03"
+                                                PassEventArgsToCommand="True">
+                                                <b:Interaction.Triggers>
+                                                    <b:EventTrigger EventName="MouseRightButtonUp">
+                                                        <b:InvokeCommandAction Command="{Binding AppItemGroupMouseRightUpCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
+                                                    </b:EventTrigger>
+                                                </b:Interaction.Triggers>
+                                                <StackPanel>
+                                                    <Grid
+                                                        Width="32"
+                                                        Height="32"
+                                                        Margin="15,10,15,10">
+                                                        <ContentControl Content="{Binding Icon}">
+                                                            <d:ContentControl.Content>
+                                                                <d:Path Data="{StaticResource FileBreakGeometry}" Style="{StaticResource PathIcon32Style}" />
+                                                            </d:ContentControl.Content>
+                                                        </ContentControl>
+                                                    </Grid>
+                                                    <TextBlock
+                                                        Margin="4,0,4,0"
+                                                        d:Text="ABC 12345 ZX666"
+                                                        Text="{Binding Title}"
+                                                        TextAlignment="Center"
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </hui:DraggableHaft>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
+
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <!--  程序托盘  -->
-                <ListBox
-                    Margin="35,35,35,35"
-                    d:ItemsSource="{d:SampleData ItemCount=0}"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    ItemsSource="{Binding CurrentAppItemPage.AppItemGroups}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel
-                                Width="{Binding ShelfCol, Source={x:Static vm:Settings.Instance}, Converter={x:Static hui:NumMulParamToDoubleConverter.Instance}, ConverterParameter=95}"
-                                Height="{Binding ShelfRow, Source={x:Static vm:Settings.Instance}, Converter={x:Static hui:NumMulParamToDoubleConverter.Instance}, ConverterParameter=95}"
-                                d:Height="475"
-                                d:Width="475" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="Focusable" Value="False" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type vm:AppItemGroup}">
-                            <hui:DraggableHaft
-                                Width="95"
-                                Height="95"
-                                AllowDrop="True"
-                                Background="Transparent"
-                                ClickCommand="{Binding AppItemGroupClickCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
-                                ClickCommandParameter="{Binding}"
-                                DragData="{Binding}"
-                                DropCommand="{Binding AppItemGroupDropCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
-                                PassEventArgsToClickCommand="True"
-                                PassEventArgsToDropCommand="True">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="DragEnter">
-                                        <b:ChangePropertyAction PropertyName="Background" Value="{DynamicResource Alpha0CBrush}" />
-                                        <b:InvokeCommandAction Command="{Binding AppItemGroupDragEnterCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
-                                    </b:EventTrigger>
-                                    <b:EventTrigger EventName="DragLeave">
-                                        <b:ChangePropertyAction PropertyName="Background" Value="Transparent" />
-                                        <b:InvokeCommandAction Command="{Binding AppItemGroupDragLeaveCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
-                                    </b:EventTrigger>
-                                    <b:EventTrigger EventName="MouseRightButtonUp">
-                                        <b:InvokeCommandAction Command="{Binding AppItemGroupMouseRightUpCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                                <StackPanel>
-                                    <Grid
-                                        Width="32"
-                                        Height="32"
-                                        Margin="15,10,15,10">
-                                        <ContentControl Content="{Binding Icon}">
-                                            <d:ContentControl.Content>
-                                                <d:Path Data="{StaticResource FileBreakGeometry}" Style="{StaticResource PathIcon32Style}" />
-                                            </d:ContentControl.Content>
-                                        </ContentControl>
-                                    </Grid>
-                                    <TextBlock
-                                        Margin="4,0,4,0"
-                                        d:Text="ABC 12345 ZX666"
-                                        Text="{Binding Title}"
-                                        TextAlignment="Center"
-                                        TextWrapping="Wrap" />
-                                </StackPanel>
-                            </hui:DraggableHaft>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <!--  空白页  -->
-                <Grid Visibility="{Binding CurrentAppItemPage.AppItemGroups.Count, Converter={x:Static hui:NumEqualParamToVisibilityVisibleConverter.Instance}, ConverterParameter=0}">
-                    <StackPanel
-                        Margin="0,5,80,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        d:Visibility="Visible">
-                        <Path
-                            Margin="0,0,0,10"
-                            HorizontalAlignment="Right"
-                            Data="{StaticResource ArrowUpGeometry}"
-                            Fill="{DynamicResource SecondaryForegroundBrush}"
-                            Style="{StaticResource PathIcon16Style}" />
-                        <TextBlock Foreground="{DynamicResource SecondaryForegroundBrush}" Text="{Binding Main.PinDescription, Source={x:Static vm:LanguagePackage.Instance}}" />
-                    </StackPanel>
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button
-                            Padding="9,7"
-                            HorizontalAlignment="Center"
-                            Command="{Binding RemovePageCommand}"
-                            Foreground="{DynamicResource SecondaryForegroundBrush}">
-                            <StackPanel Orientation="Horizontal">
-                                <Path
-                                    HorizontalAlignment="Right"
-                                    Data="{StaticResource DeleteGeometry}"
-                                    Fill="{DynamicResource SecondaryForegroundBrush}"
-                                    Style="{StaticResource PathIcon16Style}" />
-                                <TextBlock Margin="10,0,0,0" Text="{Binding Main.RemovePage, Source={x:Static vm:LanguagePackage.Instance}}" />
-                            </StackPanel>
-                        </Button>
-                        <TextBlock
-                            Margin="20"
-                            Foreground="{DynamicResource SecondaryForegroundBrush}"
-                            Text="{Binding Main.EmptyPageDescription, Source={x:Static vm:LanguagePackage.Instance}}" />
-                    </StackPanel>
-                </Grid>
-                <!--  组右键菜单  -->
+                    </hui:Carousel.ContentTemplate>
+                </hui:Carousel>
+                <!--  组窗口  -->
                 <Grid d:Visibility="Collapsed" Visibility="{Binding CurrentAppItemGroup, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
                     <Button
                         AllowDrop="True"
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding CloseGroupMenuCommand}"
                         CommandParameter="Close"
-                        Opacity="0.95"
+                        Opacity="0.85"
                         Style="{DynamicResource ButtonBlankStyle}">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Drop">
@@ -357,73 +293,58 @@
                         </b:Interaction.Triggers>
                     </Button>
                     <hui:DropShadowDecorator
-                        Margin="35"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         CornerRadius="10"
                         DropShadowPlacement="BottomRight">
-                        <hui:GroupBox
+                        <GroupBox
+                            hui:GroupBoxAttached.HeaderBackground="{DynamicResource SecondaryBackgroundBrush}"
+                            hui:GroupBoxAttached.HeaderMinSize="64"
+                            AllowDrop="True"
                             Background="{DynamicResource SecondaryBackgroundBrush}"
-                            DataContext="{Binding CurrentAppItemGroup}"
-                            HeaderBackground="{DynamicResource SecondaryBackgroundBrush}">
+                            DataContext="{Binding CurrentAppItemGroup}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="Drop">
                                     <b:InvokeCommandAction Command="{Binding AppItemGroupPadDropCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
-                            <hui:GroupBox.Header>
-                                <hui:TextBox
+                            <GroupBox.Header>
+                                <hui:TextBoxEx
                                     Width="300"
                                     VerticalAlignment="Center"
                                     d:Text="Title"
                                     MaxLength="30"
                                     Text="{Binding GroupTitle, Mode=TwoWay}"
                                     TextAlignment="Center"
-                                    TrayBorderEventVisibility="FocusVisible" />
-                            </hui:GroupBox.Header>
-                            <ListBox
-                                Margin="20,0,20,20"
+                                    TrayBorderEventVisibility="VisibleOnFocus" />
+                            </GroupBox.Header>
+                            <ItemsControl
+                                Margin="20,5,20,10"
                                 d:ItemsSource="{d:SampleData ItemCount=16}"
-                                Background="Transparent"
-                                BorderThickness="0"
                                 ItemsSource="{Binding AppItems}">
-                                <ListBox.ItemsPanel>
+                                <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel
                                             Width="{Binding GroupCol, Source={x:Static vm:Settings.Instance}, Converter={x:Static hui:NumMulParamToDoubleConverter.Instance}, ConverterParameter=95}"
                                             Height="{Binding GroupRow, Source={x:Static vm:Settings.Instance}, Converter={x:Static hui:NumMulParamToDoubleConverter.Instance}, ConverterParameter=95}"
                                             d:Height="380"
-                                            d:Width="380" />
+                                            d:Width="380"
+                                            Orientation="Horizontal" />
                                     </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBox.ItemContainerStyle>
-                                    <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                                        <Setter Property="Margin" Value="0" />
-                                        <Setter Property="Padding" Value="0" />
-                                        <Setter Property="Background" Value="Transparent" />
-                                        <Setter Property="BorderThickness" Value="0" />
-                                        <Setter Property="Focusable" Value="False" />
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
-                                <ListBox.ItemTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type vm:AppItem}">
                                         <hui:DraggableHaft
                                             Width="95"
                                             Height="95"
-                                            AllowDrop="True"
+                                            Padding="0"
                                             Background="Transparent"
-                                            ClickCommand="{Binding AppItemClickCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
-                                            ClickCommandParameter="{Binding}"
+                                            BorderThickness="0"
+                                            Command="{Binding AppItemCompoundCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
+                                            CornerRadius="0"
                                             DragData="{Binding}"
-                                            DropCommand="{Binding AppItemDropCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
-                                            PassEventArgsToDropCommand="True">
+                                            PassEventArgsToCommand="True">
                                             <b:Interaction.Triggers>
-                                                <b:EventTrigger EventName="DragEnter">
-                                                    <b:ChangePropertyAction PropertyName="Background" Value="{DynamicResource Alpha0CBrush}" />
-                                                </b:EventTrigger>
-                                                <b:EventTrigger EventName="DragLeave">
-                                                    <b:ChangePropertyAction PropertyName="Background" Value="Transparent" />
-                                                </b:EventTrigger>
                                                 <b:EventTrigger EventName="MouseRightButtonUp">
                                                     <b:InvokeCommandAction Command="{Binding AppItemMouseRightUpCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" CommandParameter="{Binding}" />
                                                 </b:EventTrigger>
@@ -448,53 +369,58 @@
                                             </StackPanel>
                                         </hui:DraggableHaft>
                                     </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </hui:GroupBox>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </GroupBox>
                     </hui:DropShadowDecorator>
                 </Grid>
                 <!--  文件右键菜单  -->
-                <Grid d:Visibility="Visible" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
+                <Grid d:Visibility="Collapsed" Visibility="{Binding CurrentAppItem, FallbackValue={x:Static Visibility.Visible}, TargetNullValue={x:Static Visibility.Collapsed}}">
                     <Button
                         Background="{DynamicResource SecondaryBackgroundBrush}"
                         Command="{Binding CloseItemMenuCommand}"
                         CommandParameter="Close"
-                        Opacity="0.95"
+                        Opacity="0.85"
                         Style="{DynamicResource ButtonBlankStyle}" />
                     <StackPanel Margin="35" VerticalAlignment="Center">
                         <Grid Height="45" Margin="10,0">
-                            <hui:Button
+                            <Button
                                 Padding="12,12"
                                 HorizontalAlignment="Left"
+                                hui:ButtonAttached.CornerRadius="5,5,0,0"
+                                Background="{DynamicResource SecondaryBackgroundBrush}"
+                                BorderThickness="1,1,1,0"
                                 Command="{Binding MoveOutGroupCommand}"
-                                CornerRadius="5,5,0,0"
                                 Visibility="{Binding MoveOutGroupVisibility}">
                                 <StackPanel Orientation="Horizontal">
                                     <Path Data="{StaticResource ForwardFillGeometry}" Style="{DynamicResource PathIcon16Style}" />
                                     <TextBlock Margin="10,0,0,0" Text="{Binding Main.MoveOutGroup, Source={x:Static vm:LanguagePackage.Instance}}" />
                                 </StackPanel>
-                            </hui:Button>
-                            <hui:Button
+                            </Button>
+                            <Button
                                 Padding="12,12"
                                 HorizontalAlignment="Right"
+                                hui:ButtonAttached.CornerRadius="5,5,0,0"
+                                Background="{DynamicResource SecondaryBackgroundBrush}"
+                                BorderThickness="1,1,1,0"
                                 Command="{Binding MoveToPreviousPageCommand}"
-                                CornerRadius="5,5,0,0"
                                 Visibility="{Binding MoveToPageVisibility}">
                                 <StackPanel Orientation="Horizontal">
                                     <Path Data="{StaticResource ArrowUpBoldHexagonGeometry}" Style="{DynamicResource PathIcon16Style}" />
                                     <TextBlock Margin="10,0,0,0" Text="{Binding Main.MoveToPreviousPage, Source={x:Static vm:LanguagePackage.Instance}}" />
                                 </StackPanel>
-                            </hui:Button>
+                            </Button>
                         </Grid>
                         <hui:DropShadowDecorator
                             MaxWidth="570"
                             CornerRadius="10"
                             DropShadowPlacement="BottomRight">
-                            <hui:GroupBox
+                            <GroupBox
+                                hui:GroupBoxAttached.HeaderBackground="{DynamicResource SecondaryBackgroundBrush}"
+                                hui:GroupBoxAttached.HeaderMinSize="64"
                                 Background="{DynamicResource SecondaryBackgroundBrush}"
-                                DataContext="{Binding CurrentAppItem}"
-                                HeaderBackground="{DynamicResource PrimaryBackgroundBrush}">
-                                <hui:GroupBox.Header>
+                                DataContext="{Binding CurrentAppItem}">
+                                <GroupBox.Header>
                                     <DockPanel LastChildFill="True">
                                         <ContentControl
                                             Width="32"
@@ -506,38 +432,39 @@
                                                 <d:Path Data="{StaticResource FileBreakGeometry}" Style="{StaticResource PathIcon32Style}" />
                                             </d:ContentControl.Content>
                                         </ContentControl>
-                                        <hui:TextBox
+                                        <hui:TextBoxEx
                                             Margin="20,0,20,0"
                                             VerticalAlignment="Center"
                                             d:Text="Title"
                                             MaxLength="30"
                                             Text="{Binding Title, Mode=TwoWay}"
-                                            TrayBorderEventVisibility="FocusVisible" />
+                                            TrayBorderEventVisibility="VisibleOnFocus" />
                                     </DockPanel>
-                                </hui:GroupBox.Header>
+                                </GroupBox.Header>
                                 <StackPanel>
                                     <Border
                                         Height="48"
                                         Margin="0,5,0,0"
                                         CornerRadius="{DynamicResource ContainerCornerRadius}"
                                         Visibility="{Binding Kind, Converter={x:Static local:AppItemKindToVisibilityVisibleConverter.Instance}}">
-                                        <hui:TextBox
+                                        <hui:TextBoxEx
                                             Margin="20,0,20,0"
                                             VerticalAlignment="Center"
                                             DockPanel.Dock="Left"
-                                            TrayBorderEventVisibility="FocusVisible">
-                                            <hui:TextBox.Header>
-                                                <Label Content="{Binding AppItem.Arguments, Source={x:Static vm:LanguagePackage.Instance}, Mode=TwoWay}" Style="{StaticResource LabelHeaderStyle}" />
-                                            </hui:TextBox.Header>
-                                        </hui:TextBox>
+                                            TrayBorderEventVisibility="VisibleOnFocus">
+                                            <hui:TextBoxEx.Header>
+                                                <Label Content="{Binding AppItem.Arguments, Source={x:Static vm:LanguagePackage.Instance}, Mode=TwoWay}" Style="{StaticResource HeaderLabelStyle}" />
+                                            </hui:TextBoxEx.Header>
+                                        </hui:TextBoxEx>
                                     </Border>
                                     <Button
                                         Height="48"
                                         Margin="0,5,0,0"
+                                        HorizontalContentAlignment="Left"
                                         Command="{Binding CloseItemMenuCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
                                         CommandParameter="Run"
-                                        Style="{DynamicResource ButtonContainerStyle}">
-                                        <StackPanel Orientation="Horizontal">
+                                        Style="{DynamicResource ButtonTransparentStyle}">
+                                        <StackPanel Margin="20,0,0,0" Orientation="Horizontal">
                                             <Path Data="{StaticResource ApplicationGeometry}" Style="{StaticResource PathIcon16Style}" />
                                             <Grid>
                                                 <TextBlock
@@ -556,13 +483,14 @@
                                     <Grid Margin="0,5,0,0" Visibility="{Binding Kind, Converter={x:Static local:AppItemKindToVisibilityVisibleConverter.Instance}}">
                                         <Button
                                             Height="48"
+                                            HorizontalContentAlignment="Left"
                                             Command="{Binding CloseItemMenuCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
                                             CommandParameter="RunAsAdministrator"
-                                            Style="{DynamicResource ButtonContainerStyle}">
-                                            <StackPanel Orientation="Horizontal">
+                                            Style="{DynamicResource ButtonTransparentStyle}">
+                                            <StackPanel Margin="20,0,0,0" Orientation="Horizontal">
                                                 <Grid>
                                                     <Path Data="{StaticResource ApplicationGeometry}" Style="{StaticResource PathIcon16Style}" />
-                                                    <Path Data="{StaticResource SecurityGeometry}" Style="{StaticResource PathIcon8Style}" />
+                                                    <Path Data="{StaticResource SecurityGeometry}" Style="{StaticResource PathIcon10Style}" />
                                                 </Grid>
                                                 <TextBlock
                                                     Margin="20,0,0,0"
@@ -570,21 +498,22 @@
                                                     Text="{Binding AppItem.RunAsAdministrator, Source={x:Static vm:LanguagePackage.Instance}}" />
                                             </StackPanel>
                                         </Button>
-                                        <hui:CheckBox
-                                            Margin="0,0,50,0"
+                                        <CheckBox
+                                            Margin="0,0,20,0"
                                             HorizontalAlignment="Right"
+                                            hui:CheckBoxAttached.IconPlacement="Right"
                                             Content="{Binding AppItem.DefaultRunAsAdministrator, Source={x:Static vm:LanguagePackage.Instance}}"
-                                            IconPlacement="Right"
                                             IsChecked="{Binding Privilege, Mode=TwoWay}"
-                                            Style="{DynamicResource CheckBoxSwitchRightStyle}" />
+                                            Style="{DynamicResource CheckBoxSwitchStyle}" />
                                     </Grid>
                                     <Button
                                         Height="48"
                                         Margin="0,5,0,0"
+                                        HorizontalContentAlignment="Left"
                                         Command="{Binding CloseItemMenuCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
                                         CommandParameter="OpenFileLocation"
-                                        Style="{DynamicResource ButtonContainerStyle}">
-                                        <StackPanel Orientation="Horizontal">
+                                        Style="{DynamicResource ButtonTransparentStyle}">
+                                        <StackPanel Margin="20,0,0,0" Orientation="Horizontal">
                                             <Path Data="{StaticResource FolderOpenGeometry}" Style="{StaticResource PathIcon16Style}" />
                                             <TextBlock
                                                 Margin="20,0,0,0"
@@ -595,11 +524,12 @@
                                     <Grid Margin="0,5,0,0">
                                         <Button
                                             Height="48"
+                                            HorizontalContentAlignment="Left"
                                             Command="{Binding CloseItemMenuCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
                                             CommandParameter="Remove"
                                             IsEnabled="{Binding AllowRemove, Source={x:Static vm:Settings.Instance}}"
-                                            Style="{DynamicResource ButtonContainerStyle}">
-                                            <DockPanel>
+                                            Style="{DynamicResource ButtonTransparentStyle}">
+                                            <StackPanel Margin="20,0,0,0" Orientation="Horizontal">
                                                 <Path
                                                     Data="{StaticResource DeleteGeometry}"
                                                     DockPanel.Dock="Left"
@@ -608,30 +538,32 @@
                                                     Margin="20,0,0,0"
                                                     VerticalAlignment="Center"
                                                     Text="{Binding AppItem.Remove, Source={x:Static vm:LanguagePackage.Instance}}" />
-                                            </DockPanel>
+                                            </StackPanel>
                                         </Button>
                                         <CheckBox
-                                            Margin="0,0,50,0"
+                                            Margin="0,0,20,0"
                                             HorizontalAlignment="Right"
                                             Content="{Binding AppItem.AllowsRemove, Source={x:Static vm:LanguagePackage.Instance}}"
                                             IsChecked="{Binding AllowRemove, Mode=TwoWay, Source={x:Static vm:Settings.Instance}}"
-                                            Style="{DynamicResource CheckBoxSwitchRightStyle}" />
+                                            Style="{DynamicResource CheckBoxSwitchStyle}" />
                                     </Grid>
                                 </StackPanel>
-                            </hui:GroupBox>
+                            </GroupBox>
                         </hui:DropShadowDecorator>
                         <Grid Height="45" Margin="10,0">
-                            <hui:Button
+                            <Button
                                 Padding="12,12"
                                 HorizontalAlignment="Right"
+                                hui:ButtonAttached.CornerRadius="0,0,5,5"
+                                Background="{DynamicResource SecondaryBackgroundBrush}"
+                                BorderThickness="1,0,1,1"
                                 Command="{Binding MoveToNextPageCommand}"
-                                CornerRadius="0,0,5,5"
                                 Visibility="{Binding MoveToPageVisibility}">
                                 <StackPanel Orientation="Horizontal">
                                     <Path Data="{StaticResource ArrowDownBoldHexagonGeometry}" Style="{DynamicResource PathIcon16Style}" />
                                     <TextBlock Margin="10,0,0,0" Text="{Binding Main.MoveToNextPage, Source={x:Static vm:LanguagePackage.Instance}}" />
                                 </StackPanel>
-                            </hui:Button>
+                            </Button>
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -648,8 +580,11 @@
                         VerticalAlignment="Center"
                         CornerRadius="10"
                         DropShadowPlacement="BottomRight">
-                        <hui:GroupBox Background="{DynamicResource SecondaryBackgroundBrush}" HeaderBackground="{DynamicResource PrimaryBackgroundBrush}">
-                            <hui:GroupBox.Header>
+                        <GroupBox
+                            hui:GroupBoxAttached.HeaderBackground="{DynamicResource SecondaryBackgroundBrush}"
+                            hui:GroupBoxAttached.HeaderMinSize="64"
+                            Background="{DynamicResource SecondaryBackgroundBrush}">
+                            <GroupBox.Header>
                                 <DockPanel>
                                     <Path
                                         Margin="20,0,0,0"
@@ -692,12 +627,12 @@
                                             Margin="0,2"
                                             HorizontalAlignment="Right"
                                             FontSize="11"
-                                            Foreground="{DynamicResource FifthForegroundBrush}">
+                                            Foreground="{DynamicResource FifthlyForegroundBrush}">
                                             Copyright (C) Loki Honoo 2023. All rights reserved.
                                         </TextBlock>
                                     </StackPanel>
                                 </DockPanel>
-                            </hui:GroupBox.Header>
+                            </GroupBox.Header>
                             <StackPanel>
                                 <Border
                                     Height="48"
@@ -737,34 +672,34 @@
                                             VerticalAlignment="Center"
                                             DockPanel.Dock="Left"
                                             Text="{Binding Settings.ShelfSize, Source={x:Static vm:LanguagePackage.Instance}}" />
-                                        <hui:ComboBox
+                                        <hui:ComboBoxEx
                                             Margin="0,0,20,0"
                                             VerticalAlignment="Center"
                                             DockPanel.Dock="Right"
                                             ItemsSource="{Binding ShelfRows, Source={x:Static vm:Settings.Instance}}"
                                             SelectedItem="{Binding ShelfRow, Source={x:Static vm:Settings.Instance}, Mode=TwoWay}">
-                                            <hui:ComboBox.Header>
+                                            <hui:ComboBoxEx.Header>
                                                 <Path
                                                     Margin="7,0"
                                                     Data="{StaticResource MoreVerticalGeometry}"
                                                     Fill="{DynamicResource PrimaryForegroundBrush}"
                                                     Style="{StaticResource PathIcon16Style}" />
-                                            </hui:ComboBox.Header>
-                                        </hui:ComboBox>
-                                        <hui:ComboBox
+                                            </hui:ComboBoxEx.Header>
+                                        </hui:ComboBoxEx>
+                                        <hui:ComboBoxEx
                                             Margin="0,0,20,0"
                                             VerticalAlignment="Center"
                                             DockPanel.Dock="Right"
                                             ItemsSource="{Binding ShelfCols, Source={x:Static vm:Settings.Instance}}"
                                             SelectedItem="{Binding ShelfCol, Source={x:Static vm:Settings.Instance}, Mode=TwoWay}">
-                                            <hui:ComboBox.Header>
+                                            <hui:ComboBoxEx.Header>
                                                 <Path
                                                     Margin="7,0"
                                                     Data="{StaticResource MoreHorizontalGeometry}"
                                                     Fill="{DynamicResource PrimaryForegroundBrush}"
                                                     Style="{StaticResource PathIcon16Style}" />
-                                            </hui:ComboBox.Header>
-                                        </hui:ComboBox>
+                                            </hui:ComboBoxEx.Header>
+                                        </hui:ComboBoxEx>
                                     </DockPanel>
                                 </Border>
                                 <Border
@@ -789,35 +724,29 @@
                                             DockPanel.Dock="Right"
                                             ItemsSource="{Binding Languages, Source={x:Static vm:Settings.Instance}}"
                                             SelectedItem="{Binding Language, Source={x:Static vm:Settings.Instance}, Mode=TwoWay}" />
-                                        <hui:DropDownButton
+                                        <hui:MenuButton
                                             Margin="0,0,20,0"
                                             VerticalAlignment="Center"
                                             DockPanel.Dock="Right"
                                             Header="Export">
-                                            <Button
-                                                HorizontalContentAlignment="Left"
+                                            <MenuItem
                                                 Command="{Binding ExportLanguageCommand}"
                                                 CommandParameter="Currently"
-                                                Content="Currently"
-                                                Style="{DynamicResource ButtonDropItemStyle}" />
-                                            <Button
-                                                HorizontalContentAlignment="Left"
+                                                Header="Currently" />
+                                            <MenuItem
                                                 Command="{Binding ExportLanguageCommand}"
                                                 CommandParameter="Default"
-                                                Content="Default"
-                                                Style="{DynamicResource ButtonDropItemStyle}" />
-                                        </hui:DropDownButton>
+                                                Header="Default" />
+                                        </hui:MenuButton>
                                     </DockPanel>
                                 </Border>
                             </StackPanel>
-                        </hui:GroupBox>
+                        </GroupBox>
                     </hui:DropShadowDecorator>
                 </Grid>
             </Grid>
-            <Grid
-                Grid.Row="1"
-                Height="70"
-                Background="{DynamicResource PrimaryBackgroundBrush}">
+            <!--  底部  -->
+            <Grid Grid.Row="2" Height="70">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -837,7 +766,7 @@
                         Command="{Binding SetLocationCommand}"
                         CommandParameter="{Binding ElementName=Window}"
                         Content="{StaticResource LocationOnGeometry}"
-                        ContentTemplate="{StaticResource GeometryToPathIcon16DataTemplate}"
+                        ContentTemplate="{StaticResource PathIcon16FillParentForegroundGeometryDataTemplate}"
                         Style="{DynamicResource ButtonTransparentStyle}"
                         ToolTip="{Binding Main.LocateButtonTip, Source={x:Static vm:LanguagePackage.Instance}}"
                         ToolTipService.Placement="Top" />
@@ -848,7 +777,7 @@
                         VerticalAlignment="Center"
                         Command="{Binding ToggleSettingsMenuCommand}"
                         Content="{StaticResource SettingGeometry}"
-                        ContentTemplate="{StaticResource GeometryToPathIcon16DataTemplate}"
+                        ContentTemplate="{StaticResource PathIcon16FillParentForegroundGeometryDataTemplate}"
                         Style="{DynamicResource ButtonTransparentStyle}"
                         ToolTip="{Binding Settings.Settings, Source={x:Static vm:LanguagePackage.Instance}}"
                         ToolTipService.Placement="Top" />
@@ -858,7 +787,7 @@
                         VerticalAlignment="Center"
                         Command="{Binding ExitCommand}"
                         Content="{StaticResource ExitGeometry}"
-                        ContentTemplate="{StaticResource GeometryToPathIcon16DataTemplate}"
+                        ContentTemplate="{StaticResource PathIcon16FillParentForegroundGeometryDataTemplate}"
                         Foreground="{DynamicResource PrimaryForegroundBrush}"
                         Style="{DynamicResource ButtonTransparentStyle}"
                         ToolTip="{Binding Main.ExitButtonTip, Source={x:Static vm:LanguagePackage.Instance}}"
@@ -871,7 +800,7 @@
         <!--  ToastHost  -->
         <hui:ToastHost
             x:Name="MainToastHost"
-            Margin="20,0"
+            Margin="20,40"
             VerticalAlignment="Top" />
     </Grid>
-</hui:Window>
+</hui:ChromeWindow>

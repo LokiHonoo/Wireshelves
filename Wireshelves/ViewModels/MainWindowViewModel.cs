@@ -10,8 +10,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -55,16 +53,11 @@ namespace Wireshelves.ViewModels
 
         private int _shelfCol;
         private int _shelfRow;
-        private FrameworkElement? _targetElement = null;
         private int _wheelTimestamp;
 
         public ICommand AddPageCommand { get; }
-        public ICommand AppItemClickCommand { get; }
-        public ICommand AppItemDropCommand { get; }
-        public ICommand AppItemGroupClickCommand { get; }
-        public ICommand AppItemGroupDragEnterCommand { get; }
-        public ICommand AppItemGroupDragLeaveCommand { get; }
-        public ICommand AppItemGroupDropCommand { get; }
+        public ICommand AppItemCompoundCommand { get; }
+        public ICommand AppItemGroupCompoundCommand { get; }
         public ICommand AppItemGroupMouseRightUpCommand { get; }
         public ICommand AppItemGroupPadDropCommand { get; }
         public ICommand AppItemGroupSidePadDropCommand { get; }
@@ -96,24 +89,20 @@ namespace Wireshelves.ViewModels
         {
             this.WindowLoadedCommand = new RelayCommand(WindowLoadedCommandExecute);
             this.WindowClosingCommand = new RelayCommand<CancelEventArgs>(WindowClosingCommandExecute);
-            this.WindowDeactivatedCommand = new RelayCommand<HonooUI.WPF.Controls.Window?>(WindowDeactivatedCommandExecute);
+            this.WindowDeactivatedCommand = new RelayCommand<HonooUI.WPF.Controls.ChromeWindow?>(WindowDeactivatedCommandExecute);
             this.MouseWheelCommand = new RelayCommand<MouseWheelEventArgs?>(MouseWheelCommandExecute);
             this.AddPageCommand = new RelayCommand<string>(AddPageCommandExecute);
             this.AppitemPagePadDropCommand = new RelayCommand<DragEventArgs>(AppitemPagePadDropCommandExecute);
             this.CloseItemMenuCommand = new RelayCommand<string>(CloseItemMenuCommandExecute);
             this.CloseGroupMenuCommand = new RelayCommand(CloseGroupMenuCommandExecute);
-            this.SetLocationCommand = new RelayCommand<HonooUI.WPF.Controls.Window>(SetLocationCommandExecute);
+            this.SetLocationCommand = new RelayCommand<HonooUI.WPF.Controls.ChromeWindow>(SetLocationCommandExecute);
             this.ExportLanguageCommand = new RelayCommand<string>(ExportLanguageCommandExecute);
             this.AppItemGroupPadDropCommand = new RelayCommand<DragEventArgs>(AppItemGroupPadDropCommandExecute);
-            this.AppItemGroupClickCommand = new RelayCommand<AppItemGroup>(AppItemGroupClickCommandExecute);
+            this.AppItemGroupCompoundCommand = new RelayCommand<DraggableEventArgs>(AppItemGroupCompoundCommandExecute);
             this.AppItemGroupMouseRightUpCommand = new RelayCommand<MouseButtonEventArgs>(AppItemGroupMouseRightUpCommandExecute);
-            this.AppItemGroupDropCommand = new RelayCommand<DragEventArgs>(AppItemGroupDropCommandExecute);
             this.AppItemGroupSidePadDropCommand = new RelayCommand<DragEventArgs>(AppItemGroupSidePadDropCommandExecute);
-            this.AppItemGroupDragEnterCommand = new RelayCommand<DragEventArgs>(AppItemGroupDragEnterCommandExecute);
-            this.AppItemGroupDragLeaveCommand = new RelayCommand<DragEventArgs>(AppItemGroupDragLeaveCommandExecute);
-            this.AppItemClickCommand = new RelayCommand<AppItem>(AppItemClickCommandExecute);
+            this.AppItemCompoundCommand = new RelayCommand<DraggableEventArgs>(AppItemCompoundCommandExecute);
             this.AppItemMouseRightUpCommand = new RelayCommand<AppItem>(AppItemMouseRightUpCommandExecute);
-            this.AppItemDropCommand = new RelayCommand<DragEventArgs>(AppItemDropCommandExecute);
             this.MoveOutGroupCommand = new RelayCommand(MoveOutGroupCommandExecute);
             this.MoveToPreviousPageCommand = new RelayCommand(MoveToPreviousPageCommandExecute);
             this.MoveToNextPageCommand = new RelayCommand(MoveToNextPageCommandExecute);
@@ -142,7 +131,7 @@ namespace Wireshelves.ViewModels
                         if (page.AppItemGroups.Count > Settings.Instance.ShelfCol * Settings.Instance.ShelfRow)
                         {
                             Settings.Instance.ShelfCol = _shelfCol;
-                            ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                            ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
                             break;
                         }
                     }
@@ -154,7 +143,7 @@ namespace Wireshelves.ViewModels
                         if (page.AppItemGroups.Count > Settings.Instance.ShelfCol * Settings.Instance.ShelfRow)
                         {
                             Settings.Instance.ShelfRow = _shelfRow;
-                            ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                            ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
                             break;
                         }
                     }
@@ -220,7 +209,7 @@ namespace Wireshelves.ViewModels
             }
         }
 
-        private void AppItemClickCommandExecute(AppItem? item)
+        private void AppItemClick(AppItem? item)
         {
             if (item != null)
             {
@@ -230,21 +219,46 @@ namespace Wireshelves.ViewModels
                     if (item.Kind == AppItemKind.Application)
                     {
                         info.Arguments = item.Arguments;
+                        info.WorkingDirectory = item.Folder;
                         if (item.Privilege)
                         {
                             info.Verb = "runas";
                         }
                     }
-                    Process.Start(info);
+                    try
+                    {
+                        Process.Start(info);
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
                 else
                 {
-                    ToastManager.Default.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastOptions.Exclamation, null);
+                    ToastManager.Default!.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastStyle.Exclamation, null, null);
                 }
             }
         }
 
-        private void AppItemDropCommandExecute(DragEventArgs? e)
+        private void AppItemCompoundCommandExecute(DraggableEventArgs? e)
+        {
+            if (e != null && this.CurrentAppItemPage != null && this.CurrentAppItemGroup != null)
+            {
+                if (e.State == DraggableState.Dropped)
+                {
+                    AppItemDrop((DragEventArgs)e.InnerEventArgs);
+                }
+                else if (e.State == DraggableState.Clicked)
+                {
+                    AppItemClick((AppItem)((FrameworkElement)e.Source).DataContext);
+                }
+                else if (e.State == DraggableState.Hovering)
+                {
+                }
+            }
+        }
+
+        private void AppItemDrop(DragEventArgs? e)
         {
             if (e != null && this.CurrentAppItemPage != null && this.CurrentAppItemGroup != null)
             {
@@ -284,18 +298,17 @@ namespace Wireshelves.ViewModels
                         }
                         else
                         {
-                            ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                            ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
                         }
                         General.Instance.Modified = true;
                     }
                 }
                 target.Background = new SolidColorBrush(Colors.Transparent);
-                _targetElement = null;
                 e.Handled = true;
             }
         }
 
-        private void AppItemGroupClickCommandExecute(AppItemGroup? group)
+        private void AppItemGroupClick(AppItemGroup? group)
         {
             if (group != null)
             {
@@ -312,58 +325,48 @@ namespace Wireshelves.ViewModels
                         if (item.Kind == AppItemKind.Application)
                         {
                             info.Arguments = item.Arguments;
+                            info.WorkingDirectory = item.Folder;
                             if (item.Privilege)
                             {
                                 info.Verb = "runas";
                             }
                         }
-                        Process.Start(info);
+                        try
+                        {
+                            Process.Start(info);
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                     else
                     {
-                        ToastManager.Default.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastOptions.Exclamation, null);
+                        ToastManager.Default!.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastStyle.Exclamation, null, null);
                     }
                 }
             }
         }
 
-        private void AppItemGroupDragEnterCommandExecute(DragEventArgs? e)
+        private void AppItemGroupCompoundCommandExecute(DraggableEventArgs? e)
         {
-            if (e != null)
+            if (e != null && this.CurrentAppItemPage != null)
             {
-                if (e.Data.GetDataPresent(typeof(AppItemGroup)))
+                if (e.State == DraggableState.Dropped)
                 {
-                    var droppedGroup = (AppItemGroup)e.Data.GetData(typeof(AppItemGroup));
-                    var target = (FrameworkElement)e.Source;
-                    if (droppedGroup.AppItems.Count == 1)
-                    {
-                        _targetElement = (FrameworkElement)e.Source;
-                        Task.Run(() =>
-                        {
-                            Thread.Sleep(2000);
-                            Application.Current.Dispatcher.Invoke(() =>
-                            {
-                                if ((FrameworkElement)e.Source == _targetElement)
-                                {
-                                    this.CurrentAppItemGroup = (AppItemGroup)target.DataContext;
-                                }
-                            });
-                        });
-                    }
+                    AppItemGroupDrop((DragEventArgs)e.InnerEventArgs);
                 }
-                e.Handled = true;
+                else if (e.State == DraggableState.Clicked)
+                {
+                    AppItemGroupClick((AppItemGroup)((FrameworkElement)e.Source).DataContext);
+                }
+                else if (e.State == DraggableState.Hovering)
+                {
+                    this.CurrentAppItemGroup = ((AppItemGroup)((FrameworkElement)e.Source).DataContext);
+                }
             }
         }
 
-        private void AppItemGroupDragLeaveCommandExecute(DragEventArgs? e)
-        {
-            if (e != null)
-            {
-                _targetElement = null;
-            }
-        }
-
-        private void AppItemGroupDropCommandExecute(DragEventArgs? e)
+        private void AppItemGroupDrop(DragEventArgs? e)
         {
             if (e != null && this.CurrentAppItemPage != null)
             {
@@ -405,12 +408,10 @@ namespace Wireshelves.ViewModels
                     }
                     else
                     {
-                        ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                        ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
                     }
                 }
                 target.Background = new SolidColorBrush(Colors.Transparent);
-                _targetElement = null;
-                e.Handled = true;
             }
         }
 
@@ -475,7 +476,7 @@ namespace Wireshelves.ViewModels
                         }
                         else
                         {
-                            ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                            ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
                         }
                     }
                 }
@@ -504,7 +505,7 @@ namespace Wireshelves.ViewModels
                     }
                     else
                     {
-                        ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                        ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
                     }
                 }
                 e.Handled = true;
@@ -568,7 +569,7 @@ namespace Wireshelves.ViewModels
                         }
                         else
                         {
-                            ToastManager.Default.Show(LanguagePackage.Instance.Messages.FolderNotExists, 5000, ToastOptions.Exclamation, null);
+                            ToastManager.Default!.Show(LanguagePackage.Instance.Messages.FolderNotExists, 5000, ToastStyle.Exclamation, null, null);
                         }
                         break;
 
@@ -579,13 +580,20 @@ namespace Wireshelves.ViewModels
                             if (this.CurrentAppItem.Kind == AppItemKind.Application)
                             {
                                 info.Arguments = this.CurrentAppItem.Arguments;
+                                info.WorkingDirectory = this.CurrentAppItem.Folder;
                                 info.Verb = "runas";
                             }
-                            Process.Start(info);
+                            try
+                            {
+                                Process.Start(info);
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
                         else
                         {
-                            ToastManager.Default.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastOptions.Exclamation, null);
+                            ToastManager.Default!.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastStyle.Exclamation, null, null);
                         }
                         break;
 
@@ -596,16 +604,23 @@ namespace Wireshelves.ViewModels
                             if (this.CurrentAppItem.Kind == AppItemKind.Application)
                             {
                                 info.Arguments = this.CurrentAppItem.Arguments;
+                                info.WorkingDirectory = this.CurrentAppItem.Folder;
                             }
                             if (this.CurrentAppItem.Privilege)
                             {
                                 info.Verb = "runas";
                             }
-                            Process.Start(info);
+                            try
+                            {
+                                Process.Start(info);
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
                         else
                         {
-                            ToastManager.Default.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastOptions.Exclamation, null);
+                            ToastManager.Default!.Show(LanguagePackage.Instance.Messages.AppItemNotExists, 5000, ToastStyle.Exclamation, null, null);
                         }
                         break;
 
@@ -645,13 +660,13 @@ namespace Wireshelves.ViewModels
                     }
                     else
                     {
-                        ToastManager.Default.Show(LanguagePackage.Instance.Messages.UnknownItem, 5000, ToastOptions.Exclamation, null);
+                        ToastManager.Default!.Show(LanguagePackage.Instance.Messages.UnknownItem, 5000, ToastStyle.Exclamation, null, null);
                     }
                 }
             }
             else
             {
-                ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
             }
         }
 
@@ -689,13 +704,13 @@ namespace Wireshelves.ViewModels
                     }
                     else
                     {
-                        ToastManager.Default.Show(LanguagePackage.Instance.Messages.UnknownItem, 5000, ToastOptions.Exclamation, null);
+                        ToastManager.Default!.Show(LanguagePackage.Instance.Messages.UnknownItem, 5000, ToastStyle.Exclamation, null, null);
                     }
                 }
             }
             else
             {
-                ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
             }
         }
 
@@ -765,7 +780,7 @@ namespace Wireshelves.ViewModels
                 }
                 else
                 {
-                    ToastManager.Default.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastOptions.Exclamation, null);
+                    ToastManager.Default!.Show(LanguagePackage.Instance.Messages.TooManyItems, 5000, ToastStyle.Exclamation, null, null);
                 }
             }
             this.CurrentAppItemGroup = null;
@@ -843,7 +858,13 @@ namespace Wireshelves.ViewModels
         {
             if (uri != null)
             {
-                Process.Start(new ProcessStartInfo(uri.ToString()) { UseShellExecute = true });
+                try
+                {
+                    Process.Start(new ProcessStartInfo(uri.ToString()) { UseShellExecute = true });
+                }
+                catch (Exception)
+                {
+                }
             }
         }
 
@@ -851,19 +872,17 @@ namespace Wireshelves.ViewModels
         {
             if (this.Editing is AppItemGroup group && this.CurrentAppItemPage != null)
             {
-                DialogManager.Default.Show(string.Format(LanguagePackage.Instance.Messages.RemoveGroupConfirm, group.Title, group.AppItems.Count),
+                DialogManager.Default!.Show(string.Format(LanguagePackage.Instance.Messages.RemoveGroupConfirm, group.Title, group.AppItems.Count),
                                            string.Empty,
-                                           DialogButtons.OKCancel,
-                                           DialogDefaultButton.Cancel,
-                                           DialogCloseButton.Ordinary,
+                                           DialogButtons.CloseTrueFalseButton,
+                                           DialogDefaultButton.FalseButton,
                                            DialogImage.None,
                                            DialogSize.Default,
-                                           false,
                                            DialogLocalization.Default,
                                            null,
                                            (e) =>
                                            {
-                                               if (e.DialogResult == DialogResult.OK)
+                                               if (e.DialogResult == true)
                                                {
                                                    foreach (var page in this.AppItemPages)
                                                    {
@@ -915,7 +934,7 @@ namespace Wireshelves.ViewModels
             }
         }
 
-        private void SetLocationCommandExecute(HonooUI.WPF.Controls.Window? window)
+        private void SetLocationCommandExecute(HonooUI.WPF.Controls.ChromeWindow? window)
         {
             if (window != null)
             {
@@ -984,7 +1003,7 @@ namespace Wireshelves.ViewModels
             }
         }
 
-        private void WindowDeactivatedCommandExecute(HonooUI.WPF.Controls.Window? window)
+        private void WindowDeactivatedCommandExecute(HonooUI.WPF.Controls.ChromeWindow? window)
         {
             if (window != null && !Settings.Instance.Pinned)
             {

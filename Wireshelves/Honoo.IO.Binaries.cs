@@ -9,7 +9,9 @@ using System;
 using System.Globalization;
 using System.Text;
 
+#pragma warning disable IDE0130 // 命名空间与文件夹结构不匹配
 namespace Honoo.IO
+#pragma warning restore IDE0130 // 命名空间与文件夹结构不匹配
 {
     /// <summary>
     /// 二进制对象辅助。

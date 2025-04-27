@@ -1,6 +1,7 @@
 ﻿using HonooUI.WPF;
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Wireshelves
@@ -13,12 +14,12 @@ namespace Wireshelves
         /// <summary>
         ///
         /// </summary>
-        public object? DarkValue { get; set; }
+        public object DarkValue { get; set; } = DependencyProperty.UnsetValue;
 
         /// <summary>
         ///
         /// </summary>
-        public object? OtherValue { get; set; }
+        public object LightValue { get; set; } = DependencyProperty.UnsetValue;
 
         /// <summary>
         ///
@@ -28,9 +29,13 @@ namespace Wireshelves
         /// <param name="parameter"></param>
         /// <param name="culture"></param>
         /// <returns></returns>
-        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (ThemeStyle)value == ThemeStyle.Dark ? this.DarkValue : this.OtherValue;
+            if (value is ThemeStyle style)
+            {
+                return style == ThemeStyle.Dark ? this.DarkValue : this.LightValue;
+            }
+            return this.DarkValue;
         }
 
         /// <summary>

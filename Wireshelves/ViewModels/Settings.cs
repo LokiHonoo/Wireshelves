@@ -73,7 +73,7 @@ namespace Wireshelves.ViewModels
                 case nameof(this.ThemeStyle):
                     if (this.ThemeStyle != null)
                     {
-                        Theme.Instance.ThemeStyle = this.ThemeStyle.Value;
+                        Theme.Instance!.ThemeStyle = this.ThemeStyle.Value;
                     }
                     break;
 
@@ -93,10 +93,8 @@ namespace Wireshelves.ViewModels
                             LanguagePackage.Instance.ResetDefault();
                         }
                     }
-                    DialogLocalization.Default = new DialogLocalization(LanguagePackage.Instance.DialogButton.OkText,
-                                                                        LanguagePackage.Instance.DialogButton.CancelText,
-                                                                        LanguagePackage.Instance.DialogButton.YesText,
-                                                                        LanguagePackage.Instance.DialogButton.NoText);
+                    DialogLocalization.Default = new DialogLocalization(LanguagePackage.Instance.DialogButton.TrueButtonText,
+                                                                        LanguagePackage.Instance.DialogButton.FalseButtonText);
                     break;
 
                 default: break;
@@ -117,9 +115,8 @@ namespace Wireshelves.ViewModels
                         try
                         {
                             var pairs = LanguagePackage.GetInformation(file.FullName);
-                            if (pairs.TryGetValue("AppName", out string? appName)&& appName == "")
+                            if (pairs.TryGetValue("AppName", out string? appName) && appName == "")
                             {
-
                             }
                             if (pairs.TryGetValue("LangName", out string? langName) && langName != "Default")
                             {

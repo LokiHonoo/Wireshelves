@@ -21,14 +21,13 @@
 		<VersionPrefix>1.0.1</VersionPrefix>
 		<BaseOutputPath>..\bin\</BaseOutputPath>
 		<Description>Lightweight software launcher. dragging, grouping, multi-language supported.</Description>
-		<PackageIcon></PackageIcon>
 		<ApplicationIcon>Wireshelves.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Honoo.Configuration.ConfigurationManager" Version="1.5.14" />
-		<PackageReference Include="HonooUI.WPF" Version="1.0.2-svn202504.35" />
+		<PackageReference Include="HonooUI.WPF" Version="1.0.2-svn202505.18" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
 	</ItemGroup>
 	
@@ -52,7 +51,7 @@
   </ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)'=='Release'">
-		<Exec Command="copy ..\LICENSE $(OutDir)LICENSE"  WorkingDirectory="$(ProjectDir)" />
+		<Exec Command="copy ..\LICENSE $(OutDir)LICENSE" WorkingDirectory="$(ProjectDir)" />
 	</Target>
 	
 </Project>
