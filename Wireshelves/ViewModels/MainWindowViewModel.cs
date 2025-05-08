@@ -874,7 +874,7 @@ namespace Wireshelves.ViewModels
             {
                 DialogManager.Default!.Show(string.Format(LanguagePackage.Instance.Messages.RemoveGroupConfirm, group.Title, group.AppItems.Count),
                                            string.Empty,
-                                           DialogButtons.CloseTrueFalseButton,
+                                           DialogButtons.All,
                                            DialogDefaultButton.FalseButton,
                                            DialogImage.None,
                                            DialogSize.Default,
