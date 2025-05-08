@@ -200,7 +200,7 @@
                                     </StackPanel>
                                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Button
-                                            Padding="9,7"
+                                            Padding="9,6"
                                             HorizontalAlignment="Center"
                                             Command="{Binding RemovePageCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
                                             Foreground="{DynamicResource SecondaryForegroundBrush}">
@@ -238,6 +238,8 @@
                                                 Width="95"
                                                 Height="95"
                                                 Padding="0"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Top"
                                                 Background="Transparent"
                                                 BorderThickness="0"
                                                 Command="{Binding AppItemGroupCompoundCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
@@ -338,6 +340,8 @@
                                             Width="95"
                                             Height="95"
                                             Padding="0"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Top"
                                             Background="Transparent"
                                             BorderThickness="0"
                                             Command="{Binding AppItemCompoundCommand, Source={x:Static vm:MainWindowViewModel.Instance}}"
