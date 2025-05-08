@@ -18,7 +18,7 @@
 		<PackageProjectUrl>https://github.com/LokiHonoo/Wireshelves</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/LokiHonoo/Wireshelves</RepositoryUrl>
 		<EnableNETAnalyzers>True</EnableNETAnalyzers>
-		<VersionPrefix>1.0.1</VersionPrefix>
+		<VersionPrefix>1.0.2</VersionPrefix>
 		<BaseOutputPath>..\bin\</BaseOutputPath>
 		<Description>Lightweight software launcher. dragging, grouping, multi-language supported.</Description>
 		<ApplicationIcon>Wireshelves.ico</ApplicationIcon>
