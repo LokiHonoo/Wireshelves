@@ -172,6 +172,7 @@
                     d:Height="535"
                     d:ItemsSource="{d:SampleData ItemCount=3}"
                     d:Width="535"
+                    AllowDrop="True"
                     Background="Transparent"
                     IsClickTurn="False"
                     IsTabStripFloated="True"
@@ -180,6 +181,11 @@
                     SelectedItem="{Binding CurrentAppItemPage, Mode=TwoWay}"
                     TabStripMinSize="42"
                     TabStripPlacement="Right">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="Drop">
+                            <b:InvokeCommandAction Command="{Binding AppItemAreaDropCommand, Source={x:Static vm:MainWindowViewModel.Instance}}" PassEventArgsToCommand="True" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
                     <hui:Carousel.ContentTemplate>
                         <DataTemplate DataType="{x:Type vm:AppItemPage}">
                             <Grid>

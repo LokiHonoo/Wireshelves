@@ -56,6 +56,7 @@ namespace Wireshelves.ViewModels
         private int _wheelTimestamp;
 
         public ICommand AddPageCommand { get; }
+        public ICommand AppItemAreaDropCommand { get; }
         public ICommand AppItemCompoundCommand { get; }
         public ICommand AppItemGroupCompoundCommand { get; }
         public ICommand AppItemGroupMouseRightUpCommand { get; }
@@ -97,6 +98,7 @@ namespace Wireshelves.ViewModels
             this.CloseGroupMenuCommand = new RelayCommand(CloseGroupMenuCommandExecute);
             this.SetLocationCommand = new RelayCommand<HonooUI.WPF.Controls.ChromeWindow>(SetLocationCommandExecute);
             this.ExportLanguageCommand = new RelayCommand<string>(ExportLanguageCommandExecute);
+            this.AppItemAreaDropCommand = new RelayCommand<DragEventArgs>(AppItemAreaDropCommandExecute);
             this.AppItemGroupPadDropCommand = new RelayCommand<DragEventArgs>(AppItemGroupPadDropCommandExecute);
             this.AppItemGroupCompoundCommand = new RelayCommand<DraggableEventArgs>(AppItemGroupCompoundCommandExecute);
             this.AppItemGroupMouseRightUpCommand = new RelayCommand<MouseButtonEventArgs>(AppItemGroupMouseRightUpCommandExecute);
@@ -206,6 +208,22 @@ namespace Wireshelves.ViewModels
                         }
                         break;
                 }
+            }
+        }
+
+        private void AppItemAreaDropCommandExecute(DragEventArgs? e)
+        {
+            if (e != null && this.CurrentAppItemPage != null)
+            {
+                if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                {
+                    string[] entries = (string[])e.Data.GetData(DataFormats.FileDrop);
+                    if (entries.Length > 0)
+                    {
+                        DropFileInPage(entries);
+                    }
+                }
+                e.Handled = true;
             }
         }
 
